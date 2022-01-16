@@ -3,7 +3,6 @@ from database import Database
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
-
 db = Database()
 
 @app.route("/")
@@ -12,18 +11,18 @@ def redirectPg():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    session["uId"] = None
-    session["email"] = None
+    if session["uId"]:
+        return render_template("index.html", loggedIn=True)
     if request.method == 'POST':
         userData =  db.checkUser([request.form.get('mailId'), request.form.get('password')])
         if userData:
             session["uId"] = userData[0]
             session["email"] = userData[1]
-            return redirect('/home')
+            return render_template("index.html", loggedIn=True)
         else:
-            return render_template("login.html", status=False, title='Login')
+            return render_template("login.html", loginError=True, title='Login')
     else:
-        return render_template("login.html", status=True, title='Login')
+        return render_template("login.html", title='Login')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -40,9 +39,9 @@ def logout():
     session["email"] = None
     return redirect('/login')
 
-@app.route("/home")
+@app.route("/index")
 def home():
-    return render_template("home.html", email=session["email"]) if session['uId'] else redirect('/login', code=302)
+    return render_template("index.html", email=session["email"]) if session['uId'] else redirect('/login', code=302)
 
 if(__name__=='__main__'):
     app.run(debug=True, port=4000)

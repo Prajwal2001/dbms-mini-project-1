@@ -12,8 +12,11 @@
                     <label for="InputPassword">Password</label>
                     <input type="password" name="password" class="form-control" id="InputPassword" placeholder="Enter Password">
                 </div>
-                <div class="form-group">
-                </div>
+                {% if loginError %}
+                <div style="color: red;">Invalid username or password!</div>
+                {% else %}
+                <br>
+                {% endif %}
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-info" type="submit">
