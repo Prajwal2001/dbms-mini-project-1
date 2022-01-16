@@ -61,20 +61,10 @@ class Database:
         #Checks if the user_id exists in the database
         self.__cursor.execute(
             f"""SELECT *
-                FROM users
+                FROM Users
                 WHERE email = '{userData[0]}' AND
                 password = '{md5(userData[1].encode()).hexdigest()}'"""
         )
-        result = self.__cursor.fetchall()
-        return result
+        return self.__cursor.fetchone()
 
-    def get_uId_by_email(self, email):
-        #Returns user_id for given user_name"""
-        self.__cursor.execute(f"""
-            SELECT *
-            FROM users
-            WHERE email = '{email}';
-            """)
-        res = self.__cursor.fetchone()
-        return res if res else None
-        
+    

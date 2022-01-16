@@ -15,10 +15,10 @@ def login():
     session["uId"] = None
     session["email"] = None
     if request.method == 'POST':
-        if db.checkUser([request.form.get('mailId'), request.form.get('password')]):
-            session["uId"] = db.get_uId_by_email(
-                request.form.get('mailId'))
-            session["email"] = request.form.get('mailId').title()
+        userData =  db.checkUser([request.form.get('mailId'), request.form.get('password')])
+        if userData:
+            session["uId"] = userData[0]
+            session["email"] = userData[1]
             return redirect('/home')
         else:
             return render_template("login.html", status=False, title='Login')
