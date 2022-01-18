@@ -1,3 +1,4 @@
+from telnetlib import STATUS
 from flask import Flask, render_template, redirect, request, session
 from database import Database
 
@@ -11,7 +12,7 @@ def redirectPg():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    logout()
+    CheckLogin()
     if request.method == 'POST':
         userData = db.checkUser([request.form.get('email'), request.form.get('password')])
         if userData:
@@ -42,13 +43,16 @@ def logout():
 
 @app.route("/index")
 def home():
+    CheckLogin()
     return render_template("index.html", cartCount = session['cartCount'], name=session["name"]) if session['uId'] else redirect('/login', code=302)
 
 @app.route("/changePassword", methods=['GET','POST'])
 def changePassword():
+    CheckLogin()
     if request.method == 'POST':
-        msg = db.changePassword(session['uid'], request.form)
-    return render_template("changePassword.html", cartCount = session['cartCount'], name=session["name"], msg=msg) if session['uId'] else redirect('/login', code=302)
+        status, msg = db.changePassword(session['uId'], request.form)
+        return render_template("changePassword.html", cartCount = session['cartCount'], name=session["name"], status=status, msg=msg) if session['uId'] else redirect('/login', code=302)
+    return render_template("changePassword.html", cartCount = session['cartCount'], name=session["name"])
 
 @app.route("/editUser", methods = ['GET','POST'])
 def editUser():
@@ -57,6 +61,12 @@ def editUser():
         return redirect('/editUser')
     else:
         return render_template("editUser.html", cartCount = session['cartCount'], name=session["name"], userData = db.getUser(session['uId']), title='Edit User')
+
+def CheckLogin():
+    try:
+        return session['uId']
+    except KeyError:
+        redirect('/login')
 
 if(__name__=='__main__'):
     app.run(debug=True, port=4000)

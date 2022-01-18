@@ -95,15 +95,19 @@ class Database:
                 WHERE uId = {uId}
             ''')
         storedPassword = self.__cursor.fetchone()[0]
-        if md5(pswd['oldPassword'].encode()).hexdigest() == storedPassword:
+        newPassword = md5(pswd['newPassword'].encode()).hexdigest()
+        
+        if md5(pswd['oldPassword'].encode()).hexdigest() != storedPassword:
+            return -1, "Incorrect Password"
+        elif newPassword == storedPassword:
+            return -1, "Same Password"
+        else:
             self.__cursor.execute(
                 f'''UPDATE Users
-                    SET password = '{md5(pswd['newPassword'].encode()).hexdigest()}'
+                    SET password = '{newPassword}'
                     WHERE uId = {uId}
                 ''')
-            return "Password Updated"
-        else:
-            return "Incorrect Password"
+            return 1, "Password Updated"
 
     def getCart(self, uId):
         self.__cursor.execute(
