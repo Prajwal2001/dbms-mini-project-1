@@ -73,10 +73,17 @@ class Database:
         )
         return self.__cursor.fetchone()
 
+    def getUser(self, uId):
+        self.__cursor.execute(
+            f'''SELECT name, email, phone, 
+                FROM Users
+                WHERE uId = {uId}''')
+        return self.__cursor.fetchone()
+
     def editUser(self, uId, userData: dict):
         self.__cursor.execute(
             f'''UPDATE Users
-                SET name = '{userData['name']}', phone = '{userData['phone']}', date = '{str(userData['date'])}'
+                SET name = '{userData['name']}', phone = '{userData['phone']}', dob = '{str(userData['dob'])}'
                 WHERE uId = {uId}
             ''')
         return userData['name']
@@ -94,7 +101,7 @@ class Database:
                     SET password = '{md5(pswd['newPassword'].encode()).hexdigest()}'
                     WHERE uId = {uId}
                 ''')
-            return "Password changed Succesfully"
+            return "Password Updated"
         else:
             return "Incorrect Password"
 
@@ -105,3 +112,7 @@ class Database:
                 WHERE uId = {uId}
             ''')
         self.__cursor.fetchall()
+
+    def getCartCount(self, uId):
+        res = self.getCart(uId)
+        return len(res) if res else 0

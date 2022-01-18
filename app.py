@@ -7,18 +7,19 @@ db = Database()
 
 @app.route("/")
 def redirectPg():
-    return redirect('/login')
+    return redirect('/index')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if session["uId"]:
-        return render_template("index.html", cartCount = session['cartCount'], name=session["name"])
+    if session['uId']:
+        redirect('/index')
     if request.method == 'POST':
-        userData =  db.checkUser([request.form.get('mailId'), request.form.get('password')])
+        userData = db.checkUser([request.form.get('email'), request.form.get('password')])
         if userData:
             session["uId"] = userData[0]
-            session["email"] = userData[1]
-            return render_template("index.html", loggedIn=True)
+            session["name"] = userData[3]
+            session['cartCount'] = db.getCartCount(session['uId'])
+            return redirect('/index')
         else:
             return render_template("login.html", loginError=True, title='Login')
     else:
@@ -44,9 +45,19 @@ def logout():
 def home():
     return render_template("index.html", cartCount = session['cartCount'], name=session["name"]) if session['uId'] else redirect('/login', code=302)
 
-@app.route("/changePassword")
+@app.route("/changePassword", methods=['GET','POST'])
 def changePassword():
-    return render_template("profile.html", cartCount = session['cartCount'], name=session["name"]) if session['uId'] else redirect('/login', code=302)
+    if request.method == 'POST':
+        msg = db.changePassword(session['uid'], request.form)
+    return render_template("changePassword.html", cartCount = session['cartCount'], name=session["name"], msg=msg) if session['uId'] else redirect('/login', code=302)
+
+@app.route("/editUser", methods = ['GET','POST'])
+def editUser():
+    if request.method == 'POST':
+        session['name'] = db.editUser(session['uId'], request.form)
+        return redirect('/editUser.html')
+    else:
+        return render_template("editUser.html", cartCount = session['cartCount'], name=session["name"], userData = db.getUser(session['uId']), title='Edit User')
 
 if(__name__=='__main__'):
     app.run(debug=True, port=4000)

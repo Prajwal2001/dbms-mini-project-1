@@ -29,9 +29,20 @@
               <a class="nav-item nav-link" href="/home">Home</a>
               <a class="nav-item nav-link" href="/about">About</a>
             </div>
+            
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-              {% if loggedin %}
+              {% if name %}
+              <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{name}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <li><a class="dropdown-item" href="/editUser">Edit Profile</a></li>
+                  <li><a class="dropdown-item" href="/changePassword">Change Password</a></li>
+                  <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                </ul>
+              </div>
               <a class="nav-item nav-link" href="/logout">Logout</a>
               {% else %}
               <a class="nav-item nav-link" href="/login">Login</a>
@@ -47,19 +58,6 @@
         <div class="col-md-12">
           {% block content %}{% endblock %}
         </div>
-        <!-- div class="col-md-4">
-          <div class="content-section">
-            <h3>Trending</h3>
-            <p class='text-muted'>Check out the books everyone is reading.
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-light">Percy Jackson</li>
-                <li class="list-group-item list-group-item-light">Song of Fire & Ice</li>
-                <li class="list-group-item list-group-item-light">Berserk</li>
-                <li class="list-group-item list-group-item-light">...</li>
-              </ul>
-            </p>
-          </div>
-        </div -->
       </div>
     </main>
 
@@ -68,6 +66,6 @@
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
