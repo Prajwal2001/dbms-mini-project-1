@@ -7,12 +7,11 @@ db = Database()
 
 @app.route("/")
 def redirectPg():
-    return redirect('/index')
+    return redirect('/login')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if session['uId']:
-        redirect('/index')
+    logout()
     if request.method == 'POST':
         userData = db.checkUser([request.form.get('email'), request.form.get('password')])
         if userData:
@@ -55,7 +54,7 @@ def changePassword():
 def editUser():
     if request.method == 'POST':
         session['name'] = db.editUser(session['uId'], request.form)
-        return redirect('/editUser.html')
+        return redirect('/editUser')
     else:
         return render_template("editUser.html", cartCount = session['cartCount'], name=session["name"], userData = db.getUser(session['uId']), title='Edit User')
 

@@ -6,19 +6,19 @@
                 <legend class="border-bottom mb-4">Profile</legend>
                 <div class="form-group">
                     <label for="InputName">Name</label>
-                    <input type="text" name="name" class="form-control" id="InputName" placeholder="Enter Name" required>
+                    <input type="text" name="name" class="form-control" id="InputName" value="{{userData[0]}}" placeholder="Enter Name" required>
                 </div>
                 <div class="form-group">
                     <label for="InputEmail">Email address</label>
-                    <input type="email" name="email" class="form-control" id="InputEmail" placeholder="Enter Email" disabled>
+                    <input type="email" name="email" class="form-control" id="InputEmail" value="{{userData[1]}}" placeholder="Enter Email" disabled>
                 </div>
                 <div class="form-group">
                     <label for="InputPhone">Phone Number</label>
-                    <input type="tel" name="phone" class="form-control" id="InputPhone" placeholder="Enter Phone" required>
+                    <input type="tel" name="phone" class="form-control" id="InputPhone" value="{{userData[2]}}" placeholder="Enter Phone" required>
                 </div>
                 <div class="form-group">
                     <label for="InputDate">Date of Birth</label>
-                    <input type="date" name="dob" class="form-control" id="InputDate" required>
+                    <input type="date" name="dob" class="form-control" id="InputDate" value="{{userData[3]}}" required>
                 </div>
             </fieldset>
             <div class="form-group">

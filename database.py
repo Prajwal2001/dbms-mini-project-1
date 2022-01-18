@@ -75,7 +75,7 @@ class Database:
 
     def getUser(self, uId):
         self.__cursor.execute(
-            f'''SELECT name, email, phone, 
+            f'''SELECT name, email, phone, dob
                 FROM Users
                 WHERE uId = {uId}''')
         return self.__cursor.fetchone()
