@@ -63,9 +63,7 @@ def editUser():
         return render_template("editUser.html", cartCount = session['cartCount'], name=session["name"], userData = db.getUser(session['uId']), title='Edit User')
 
 def CheckLogin():
-    try:
-        return session['uId']
-    except KeyError:
+    if 'uId' not in session:
         redirect('/login')
 
 if(__name__=='__main__'):

@@ -1,7 +1,5 @@
-from email.utils import getaddresses
 from hashlib import md5
 import mysql.connector
-
 
 class Database:
     #Connect Database
@@ -39,29 +37,6 @@ class Database:
             "phone": userData[4],
             "dob": str(userData[5])
         }
-
-    def getAddress(self, uId):
-        self.__cursor.execute(
-            f'''SELECT *
-                FROM Addresses
-                WHERE uId = {uId}''')
-        return [{
-            "address": userData[1],
-            "pincode": userData[2]
-        } for userData in self.__cursor.fetchall()]
-
-    def addAddress(self, address: dict):
-        #Adds a user_id to the database, by accepting a list consisting of email and password.
-        #And returns the updated table values in a list of key value pairs
-        try:
-            self.__cursor.execute(f'''INSERT INTO Users VALUES (
-                    {address['uId']}, 
-                    '{address['address']}', 
-                    '{address['pincode']}')''')
-        except mysql.connector.errors.IntegrityError:
-            return None
-
-        return self.getAddress(address['uId'])
 
     def checkUser(self, userData: list):
         #Checks if the user_id exists in the database

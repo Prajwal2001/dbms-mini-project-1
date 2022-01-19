@@ -33,6 +33,7 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if name %}
+              <a class="nav-item nav-link" href="/cart"><span class="badge badge-secondary">{{cartCount}}</span> Cart</a>
               <div class="dropdown">
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                   {{name}}
