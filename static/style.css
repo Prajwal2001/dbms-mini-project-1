@@ -6,7 +6,7 @@ body{
 .block-body{
   padding: 2em;
 }
-.block-body .card{
+.transparent{
   background: transparent;
 }
 nav .container-fluid{

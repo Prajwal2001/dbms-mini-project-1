@@ -18,9 +18,21 @@ db = mysql.connector.connect(
 cursor = db.cursor()
 
 @app.route("/")
-@app.route("/home")
+def redirectPg():
+    if 'loggedIn' in session:
+        if session['loggedIn']==1:
+            return redirect(url_for('index'))
+        elif session['loggedIn']==2:
+            return redirect(url_for('doctorIndex'))
+        else:
+            return redirect(url_for('adminIndex'))
+    return redirect('/home')
+
+@app.route('/home')
 def home():
-    return render_template("home.html")
+    if 'loggedIn' in session:
+        return redirect(url_for('redirectPg'))
+    return render_template('home.html')
 
 @app.route('/logout')
 def logout():

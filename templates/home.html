@@ -1,10 +1,22 @@
 {% extends "layout.html" %}
 {% block body %}
+<div class="row col-md-5 gap-2">
   <div class="msg">{{ msg }}</div>
-  <div class="card">
-    <div class="card-body d-grid gap-2 col-6 mx-auto ">
-    <a class="btn btn-success" href="{{url_for('makeappointment')}}">Make An Appointment</a>
-    <a class="btn btn-success" href="{{url_for('appointments')}}">My Appointments</a>
-  </div>
-  </div>
+    <div class="card mx-auto shadow mb-5 bg-body rounded">
+      <h2>Login</h2>
+      <div class="card-body d-grid gap-2 mx-auto col-12">
+        <a class="btn btn-success" href="{{url_for('login')}}">Patient Login</a>
+        <a class="btn btn-success" href="{{url_for('doctorLogin')}}">Doctor Login</a>
+        <a class="btn btn-success" href="{{url_for('adminLogin')}}">Admin Login</a>
+      </div>
+    </div>
+    <div class="card mx-auto shadow mb-5 bg-body rounded">
+      <h2>Sign Up</h2>
+      <div class="card-body d-grid gap-2 mx-auto col-12">
+        <a class="btn btn-success" href="{{url_for('register')}}">Register Patient</a>
+        <a class="btn btn-success" href="{{url_for('doctorRegister')}}">Register Doctor</a>
+        <a class="btn btn-success" href="{{url_for('adminRegister')}}">Register Admin</a>
+      </div>
+    </div>
+</div>
 {% endblock body %}
