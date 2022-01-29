@@ -73,6 +73,10 @@
               </a>
               {% if loggedIn == 1 %}
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{{url_for('makeappointment')}}">Make Appointment</a></li>
+                <li><a class="dropdown-item" href="{{url_for('appointments')}}">My Appointments</a></li>
+                <li><a class="dropdown-item" href="{{url_for('records')}}">My Records</a></li>
+                <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{{url_for('display')}}">Display</a></li>
                 <li><a class="dropdown-item" href="{{url_for('update')}}">Update</a></li>
                 <li><hr class="dropdown-divider"></li>

@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-    <div class="card">
+    <div class="card shadow mb-5 bg-body rounded">
         <div class="card-header">
             <h2>Your Details</h2>
         </div>
@@ -15,8 +15,8 @@
                     <td>{{ admin[2] }}</td>
                 </tr>
             </table>
-            <a class="btn btn-primary" href="{{url_for('adminUpdate')}}">Edit</a>
-            <a class="btn btn-primary" href="{{url_for('adminIndex')}}">Back</a>
+            <a class="btn btn-success" href="{{url_for('adminUpdate')}}">Edit</a>
+            <a class="btn btn-success" href="{{url_for('adminIndex')}}">Back</a>
         </div>
     </div>
 </div>

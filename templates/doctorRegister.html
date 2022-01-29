@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="card">
+<div class="card shadow mb-5 bg-body rounded">
     <div class="card-header">
         <h2>Register</h2>
     </div>
@@ -11,7 +11,7 @@
             <input type="password" name="passwd" placeholder="Enter Your Password" class="form-control" id="passwd" required>
             <input type="text" name="docName" placeholder="Enter Your name" class="form-control" id="docName" required>
             <input type="date" name="availableDate" placeholder="Enter available date" class="form-control" id="availableDate" required>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-success">Register</button>
         </form>
         <p class="form-text">Already have account? <a href="{{ url_for('doctorLogin')}}">Login here</a></p>
     </div>

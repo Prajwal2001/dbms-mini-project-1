@@ -1,26 +1,26 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="card">
+<div class="card shadow mb-5 bg-body rounded">
   <div class="card-header">My Account</div>
   <div class="card-body gap-2 d-grid">
     <div class="btn-group-vertical">
-      <a class="btn btn-outline-primary" href="{{url_for('nurseAlloc')}}">Allocate Nurse</a>
-      <a class="btn btn-outline-primary" href="{{url_for('doctorsList')}}">Doctor Profiles</a>
-      <a class="btn btn-outline-primary" href="{{url_for('selectPatientforRecord')}}">View Patient Record</a>
+      <a class="btn btn-success" href="{{url_for('nurseAlloc')}}">Allocate Nurse</a>
+      <a class="btn btn-success" href="{{url_for('doctorsList')}}">Doctor Profiles</a>
+      <a class="btn btn-success" href="{{url_for('selectPatientforRecord')}}">View Patient Record</a>
     </div>
     <div class="btn-group-vertical">
-      <a class="btn btn-outline-primary" href="{{url_for('takes')}}">medicines</a>
-      <a class="btn btn-outline-primary" href="{{url_for('update_tests')}}">update-tests</a>
-      <a class="btn btn-outline-primary" href="{{url_for('allocate_rooms')}}">allocate_rooms</a>
-      <a class="btn btn-outline-primary" href="{{url_for('recordUpdate')}}">Update Record</a>
-      <a class="btn btn-outline-primary" href="{{url_for('pre_rec_appointment')}}">Appointments</a>
-      <a class="btn btn-outline-primary" href="{{url_for('nurseUpdate')}}">Update Nurse Details</a>
+      <a class="btn btn-success" href="{{url_for('takes')}}">Medicines</a>
+      <a class="btn btn-success" href="{{url_for('update_tests')}}">Update-tests</a>
+      <a class="btn btn-success" href="{{url_for('allocate_rooms')}}">Allocate_rooms</a>
+      <a class="btn btn-success" href="{{url_for('recordUpdate')}}">Update Record</a>
+      <a class="btn btn-success" href="{{url_for('pre_rec_appointment')}}">Appointments</a>
+      <a class="btn btn-success" href="{{url_for('nurseUpdate')}}">Update Nurse Details</a>
     </div>
     <div class="btn-group-vertical">
-      <a class="btn btn-outline-primary" href="{{url_for('adminDisplay')}}">View Profile</a>
-      <a class="btn btn-outline-primary" href="{{url_for('adminUpdate')}}">Update Profile</a>
+      <a class="btn btn-success" href="{{url_for('adminDisplay')}}">View Profile</a>
+      <a class="btn btn-success" href="{{url_for('adminUpdate')}}">Update Profile</a>
     </div>
-    <a class="btn btn-outline-primary" href="{{url_for('logout')}}">Logout</a>
+    <a class="btn btn-success" href="{{url_for('logout')}}">Logout</a>
   </div>
 </div>
 <div class="form-text">{{ msg }}</div>

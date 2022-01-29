@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-    <div class="card">
+    <div class="card shadow mb-5 bg-body rounded">
         <div class="card-header">
             <h2>Enter Details to Update</h2>
         </div>
@@ -16,8 +16,8 @@
                 <div class="mb-3 col">
                     <input type="text" name="adminName" placeholder="Enter Your name" class="form-control" id="adminName" value="{{admin[2]}}" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
-                <a class="btn btn-primary" href="{{url_for('adminIndex')}}">Home</a>
+                <button type="submit" class="btn btn-success">Update</button>
+                <a class="btn btn-success" href="{{url_for('adminIndex')}}">Home</a>
             </form>
         </div>
     </div>

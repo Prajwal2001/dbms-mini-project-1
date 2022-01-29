@@ -42,12 +42,14 @@ def logout():
 
 @app.route("/index",methods=['GET','POST'])
 def index():
-    return render_template("index.html", loggedIn = session['loggedIn'])
+    if 'loggedIn' in session:
+        return render_template("index.html", loggedIn = session['loggedIn'])
+    return redirect(url_for('login'))
 
 @app.route('/login',methods=['GET','POST'])
 def login():
     msg=''
-    if request.method=='POST' and 'mailId' in request.form and 'passwd' in request.form:
+    if request.method=='POST':
         cursor.execute(f'''SELECT * FROM patient WHERE mailId = '{request.form['mailId']}' AND passwd= '{request.form['passwd']}' ''')
         patient=cursor.fetchone()
         if patient:
@@ -254,7 +256,7 @@ def adminUpdate():
         return render_template("adminUpdate.html", loggedIn = session['loggedIn'], admin=admin,  msg = msg)
     return redirect(url_for('adminLogin'))
 
-@app.route('/nurseUpdate',methods=['GET','POST'])
+@app.route('/nurseUpdate', methods=['GET','POST'])
 def nurseUpdate():
     msg=''
     if 'loggedIn' in session:

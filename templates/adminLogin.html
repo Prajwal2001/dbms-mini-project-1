@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="card">
+<div class="card shadow mb-5 bg-body rounded">
   <div class="card-header">
     <h2>Admin Login</h2>
   </div>
@@ -13,7 +13,7 @@
       <div class="mb-3 col">
         <input type="password" name="passwd" placeholder="Enter Your Password" class="form-control" id="passwd" required>
       </div>
-      <button type="submit" class="btn btn-primary">Login</button>
+      <button type="submit" class="btn btn-success">Login</button>
     </form>
     <p class="form-text">New to this page? <a href="{{url_for('adminRegister')}}">Register here</a></p>
   </div>
