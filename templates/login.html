@@ -1,32 +1,19 @@
 {% extends "layout.html" %}
-{% block content %}
-    <div class="content-section">
-        <form method="POST" action="/login">
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Log In</legend>
-                <div class="form-group">
-                    <label for="InputEmail">Email address</label>
-                    <input type="email" name="email" class="form-control" id="InputEmail" placeholder="Enter Email" required>
-                </div>
-                <div class="form-group">
-                    <label for="InputPassword">Password</label>
-                    <input type="password" name="password" class="form-control" id="InputPassword" placeholder="Enter Password">
-                </div>
-                {% if loginError %}
-                <span style="color: red;">Invalid username or password!</span>
-                {% endif %}
-                <br>
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">
-                    Log In
-                </button>
-            </div>
-        </form>
-    </div>
-    <div class="border-top pt-3">
-        <small class="text-muted">
-            New User? <a class="ml-2" href="/signup">Sign Up</a>
-        </small>
-    </div>
-{% endblock content %}
+{% block body %}
+<div class="card">
+  <div class="card-body">
+    <form action="{{ url_for('login')}}" method="post" autocomplete="off">
+      <legend><h2>Patient Login</h2></legend>
+      <div class="form-text">{{ msg }}</div>
+      <div class="mb-3">
+        <input type="email" name="mailId" placeholder="Enter Your Username" class="form-control" id="mailId" required>
+      </div>
+      <div class="mb-3">
+        <input type="password" name="passwd" placeholder="Enter Your Password" class="form-control" id="passwd" required>
+      </div>
+      <input type="submit" class="btn btn-primary" value="Login">
+    </form>
+    <p class="form-text">New to this page? <a href="{{ url_for('register')}}">Register here</a></p>
+  </div>
+</div>
+{% endblock body %}

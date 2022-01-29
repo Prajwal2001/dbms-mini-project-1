@@ -1,4 +1,20 @@
 {% extends "layout.html" %}
-{% block content %}
-    <div>INDEX</div>
-{% endblock content %}
+{% block body %}
+    <div id="top-border"></div>
+    <ul id="unordered-list-1">
+      <li><a href="#">About-us</a></li>
+      <li><a href="#">Contacts</a></li><br>
+    </li>
+      <li><a href="{{url_for('doctorsList')}}">Doctors-profiles</a></li>
+      <li><a href="{{url_for('records')}}">My Records</a>
+      <li><a href="#">My account</a>
+      <ul>
+        <li><a href="{{url_for('display')}}">Display</a></li>
+        <li><a href="{{url_for('update')}}">Update</a></li>
+        <li><a href="{{url_for('logout')}}">Logout</a></li>
+      </ul>
+    <div class="msg">{{ msg }}</div>
+
+    <div id="Appointment-box"><a href="{{url_for('makeappointment')}}">Make An Appointment</a></div>
+    <div id="Appointment_box"><a href="{{url_for('appointments')}}">My Appointment</a></div>
+{% endblock body %}
