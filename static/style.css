@@ -3,8 +3,11 @@ body{
   background-color: #cccccc;
   background-size: cover;
 }
-:root{
-  --bs-success: #00d423;
+.block-body{
+  padding: 2em;
+}
+.block-body .card{
+  background: transparent;
 }
 nav .container-fluid{
   padding: 0.15em 3em
