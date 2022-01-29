@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="card shadow mb-5 bg-body rounded">
+  <div class="card-header">
+    <h2>Fill nurse Details to Update</h2>
+  </div>
+  <div class="card-body">
+    <form action="{{ url_for('nurseAdd')}}" method="post" autocomplete="off">
+      <div class="mb-3 col">
+        <input type="text" name="nurseId" placeholder="Enter Nurse Id" class="form-control" id="nurseId" required>
+      </div>
+      <div class="mb-3 col">
+        <input type="text" name="nurseName" placeholder="Enter Nurse Name" class="form-control" id="nurseName" required>
+      </div>
+      <div class="mb-3 col">
+        <input type="text" name="phoneNumber" placeholder="Enter Phone No." class="form-control" id="phoneNumber" required>
+      </div>
+      <button type="submit" class="btn btn-success">register</button>
+    </form>
+</div>
+{% endblock body %}

@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for,session
-import re
 import mysql.connector
 
 app=Flask(__name__)
@@ -130,7 +129,7 @@ def makeappointment():
             if appointment:
                 msg="You have already booked an Appointment"
             else:
-                cursor.execute(f'''INSERT INTO appointment VALUES ({session['mailId']}, {appointmentDate}, '{docMailId}') ''')
+                cursor.execute(f'''INSERT INTO appointment VALUES ('{session['mailId']}', '{appointmentDate}', '{docMailId}') ''')
                 return redirect(url_for('index'))
         return render_template('makeappointment.html', loggedIn=session['loggedIn'], msg = msg)
     return redirect(url_for('login'))
@@ -170,37 +169,33 @@ def adminRegister():
         msg = 'Please fill out the form !'
     return render_template('adminRegister.html', msg = msg)
 
-@app.route("/update_tests" , methods=["GET","POST"])
-def update_tests():
+@app.route("/testAdd" , methods=["GET","POST"])
+def testAdd():
     msg=" "
     if 'loggedIn' in session:
-        if request.method=='POST' and 'mailId' in request.form and 'test_id' in request.form and 'test_date' in request.form and 'test_analysis' in request.form:
+        if request.method=='POST':
             mailId=request.form['mailId']
-            test_id=request.form['test_id']
-            test_analysis=request.form['test_analysis']
-            test_date=request.form['test_date']
-            cursor.execute('INSERT INTO test_descrp VALUES(%s,%s,%s,%s)',(mailId,test_id,test_date,test_analysis))
+            testId=request.form['testId']
+            Analysis=request.form['Analysis']
+            testDate=request.form['testDate']
+            cursor.execute(f'''INSERT INTO testDesc VALUES('{mailId}','{testId}','{testDate}', '{Analysis}')''')
             msg="Successfully updated"
-            return render_template('adminIndex.html',msg=msg)
+            return render_template('adminIndex.html', loggedIn=session['loggedIn'], msg=msg)
         else:
             msg='please fill out the form'
-    return render_template('update_tests.html', msg = msg)
+    return render_template('testAdd.html', msg = msg)
 
 @app.route("/takes",methods=["GET","POST"])
 def takes():
     msg=''
     if 'loggedIn' in session:
-        if request.method=='POST' and 'mailId' in request.form and 'medicine_id' in request.form and 'quantity' in request.form and 'takes_date' in request.form:
+        if request.method=='POST':
             mailId=request.form['mailId']
-            medicine_id=request.form['medicine_id']
+            medicineId=request.form['medicineId']
             quantity=request.form['quantity']
-            takes_date=request.form['takes_date']
-            cursor.execute('INSERT INTO takes VALUES(%s,%s,%s,%s)',(mailId,medicine_id,quantity,takes_date))
-            msg="successfully booked medicines"
-            return render_template('adminIndex.html',msg=msg)
-        else:
-            msg='please fill out the form'
-    return render_template('takes.html', msg = msg)
+            takesDate=request.form['takesDate']
+            cursor.execute('INSERT INTO takes VALUES(%s,%s,%s,%s)',(mailId, medicineId, quantity, takesDate))
+    return render_template('takes.html', loggedIn=session['loggedIn'], msg = msg)
 
 @app.route("/recordUpdate",methods=['GET','POST'])
 def recordUpdate():
@@ -253,8 +248,8 @@ def adminUpdate():
         return render_template("adminUpdate.html", loggedIn = session['loggedIn'], admin=admin,  msg = msg)
     return redirect(url_for('adminLogin'))
 
-@app.route('/nurseUpdate', methods=['GET','POST'])
-def nurseUpdate():
+@app.route('/nurseAdd', methods=['GET','POST'])
+def nurseAdd():
     msg=''
     if 'loggedIn' in session:
         if request.method=='POST':
@@ -269,33 +264,7 @@ def nurseUpdate():
                 cursor.execute('INSERT INTO nurse VALUES(%s,%s,%s)',(nurseId,nurseName,phoneNumber))
                 msg="successfully nurse has registered"
                 return render_template('adminIndex.html', msg=msg)
-    return render_template('nurseUpdate.html', msg = msg)
-
-@app.route('/allocate_rooms',methods=['GET','POST'])
-def allocate_rooms():
-    msg=''
-    if 'loggedIn' in session:
-        if request.method=='POST' and 'mailId' in request.form and 'room_no' in request.form and 'block_no' in request.form  and'dateIn' in request.form and 'dateOut' in request.form:
-            mailId=request.form['mailId']
-            room_no=request.form['room_no']
-            block_no=request.form['block_no']
-            dateIn=request.form['dateIn']
-            dateOut=request.form['dateOut']
-            cursor.execute('SELECT * FROM bookings WHERE mailId= % s and dateIn = %s',(mailId,dateIn,))
-            bookings = cursor.fetchone()
-            if bookings:
-                msg = 'You already booked your appointment !'
-            elif not re.match(r'[^@]+@[^@]+\.[^@]+', mailId):
-                msg = 'Invalid email address !'
-            else:
-                cursor.execute('INSERT INTO bookings(mailId, room_no, block_no,dateIn,dateOut) VALUES (% s, % s, % s,% s,% s)', (mailId, room_no, block_no,dateIn,dateOut))
-                msg = 'You have successfully booked room for the patient !'
-                return redirect(url_for('adminIndex'))
-        else:
-            msg = 'Please fill out the form !'
-            return render_template('allocate_rooms.html', msg = msg)
-
-
+    return render_template('nurseAdd.html', msg = msg)
 
 @app.route('/doctorLogin',methods=['GET','POST'])
 def doctorLogin():
@@ -407,26 +376,14 @@ def selectPatientforRecord():
             return render_template("selectPatientforRecord.html", loggedIn=session['loggedIn'], msg=msg)
     return render_template('doctorIndex.html')
 
-temp2=0
-@app.route("/rec_appointment",methods=['GET','POST'])
-def rec_appointment():
+@app.route("/docAppointments",methods=['GET','POST'])
+def docAppointments():
     if 'loggedIn' in session:
-        cursor.execute('SELECT * FROM appointment WHERE docMailId = % s', (temp2,))
+        docMailId = True
+        cursor.execute(f'''SELECT * FROM appointment WHERE docMailId = '{docMailId}' ''')
         appoint=cursor.fetchall()
-        return render_template("rec_appointment.html", appoint=appoint)
+        return render_template("docAppointments.html", appoint=appoint)
     return redirect(url_for('home'))
-
-@app.route("/pre_rec_appointment",methods=['GET','POST'])
-def pre_rec_appointment():
-    msg=" "
-    if 'loggedIn' in session:
-        if request.method=="POST" and 'docMailId' in request.form:
-            docMailId=request.form['docMailId']
-            temp2=docMailId
-            return redirect(url_for('rec_appointment'))
-        else:
-            return render_template("pre_rec_appointment.html",msg=msg)
-    return render_template('adminIndex.html')
 
 @app.route("/doctorsList",methods=['GET','POST'])
 def doctorsList():

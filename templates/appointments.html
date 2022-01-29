@@ -8,12 +8,18 @@
                 {% if not appointments %}
                 No Appointments Found.
                 {% else %}
-                <table class="table table-hover">
                     {% for appointment in appointments %}
-                    <li>doctor id : {{appointment[0]}}</li>
-                    <li>date of appointment: {{appointment[1]}}</li>
+                    <table class="table table-hover">
+                        <tr>
+                            <td> Doctor mail-id : </td>
+                            <td>{{appointment[2]}}</td>
+                        </tr>
+                        <tr>
+                            <td> Date of Appointment: </td>
+                            <td>{{appointment[1]}}</td>
+                        </tr>
+                    </table>
                     {% endfor %}
-                </table>
                 {% endif %}
             </div>
         </div>

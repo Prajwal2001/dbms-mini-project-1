@@ -214,4 +214,4 @@ INSERT INTO record VALUES
   ('1@gmail.com', 1, 'The Patient is fine'),
   ('1@gmail.com', 2, 'The Patient Physically fine, but requires psychological therapy');
   
-  
+  SELECT * FROM record WHERE mailId='1@gmail.com';

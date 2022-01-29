@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+  <div class="card">
+    <div class="card-header">
+      <h2>Add Test</h2>
+    </div>
+    <div class="card-body">
+      <form action="{{url_for('testAdd')}}" method="POST" autocomplete="OFF">
+        <div class="msg">{{ msg }}</div>
+        <div class="mb-3">
+          <input type="email" name="mailId" placeholder="Enter mail-id" class="form-control"  required>
+        </div>
+        <div class="mb-3">
+          <input type="text" name="testId" placeholder="Enter test-id" class="form-control"  required>
+        </div>
+        <div class="mb-3">
+          <input type="date" name="testDate" placeholder="Enter Test date" class="form-control"  required>
+        </div>
+        <div class="mb-3">
+          <input type="text" name="Analysis" placeholder="Enter Analysis" class="form-control"  required>
+        </div>
+        <button type="submit" class="btn btn-success">Update</button>
+      </form>
+    </div>
+  </div>
+{% endblock body %}

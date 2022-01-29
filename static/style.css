@@ -1,6 +1,7 @@
 body{
   background-image: url("./bg.jpg");
   background-color: #cccccc;
+  background-attachment: fixed;
   background-size: cover;
 }
 .block-body{
