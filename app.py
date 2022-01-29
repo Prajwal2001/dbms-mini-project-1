@@ -114,28 +114,25 @@ def update():
 def appointments():
     if 'loggedIn' in session:
         cursor.execute(f'''SELECT * FROM appointment WHERE mailId = '{session['mailId']}' ''')
-        appointment=cursor.fetchall()
-        return render_template("appointments.html", appointment = appointment)
+        appointments=cursor.fetchall()
+        return render_template("appointments.html", loggedIn=session['loggedIn'], appointments = appointments)
     return redirect(url_for('login'))
 
 @app.route('/makeappointment' , methods=['GET','POST'])
 def makeappointment():
     msg=''
     if 'loggedIn' in session:
-        if request.method=='POST' and  'docMailId' in request.form and 'date_appointment' in request.form:
+        if request.method=='POST':
             docMailId=request.form['docMailId']
-            date_appointment=request.form['date_appointment']
-            cursor.execute('SELECT * FROM appointment WHERE mailId = %s and date_appointment = %s',(session['mailId'],date_appointment))
+            appointmentDate=request.form['appointmentDate']
+            cursor.execute('SELECT * FROM appointment WHERE mailId = %s and appointmentDate = %s',(session['mailId'],appointmentDate))
             appointment=cursor.fetchone()
             if appointment:
-                msg="you had already booked an appointment"
+                msg="You have already booked an Appointment"
             else:
-                cursor.execute('INSERT INTO appointment VALUES (%s,%s,%s)',(session['mailId'],date_appointment,docMailId))
-                msg='successfully booked your appointment!!'
+                cursor.execute(f'''INSERT INTO appointment VALUES ({session['mailId']}, {appointmentDate}, '{docMailId}') ''')
                 return redirect(url_for('index'))
-        else:
-            msg = 'appointment failed please rebook again!'
-        return render_template('makeappointment.html', msg = msg)
+        return render_template('makeappointment.html', loggedIn=session['loggedIn'], msg = msg)
     return redirect(url_for('login'))
 
 @app.route('/adminLogin',methods=['GET','POST'])
