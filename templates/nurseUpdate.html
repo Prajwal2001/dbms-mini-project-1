@@ -1,0 +1,21 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>nurse_info</title>
+      <link rel="stylesheet" href="../static/style.css">
+</head>
+<body >
+  <div class="one">
+    <div class="content" align="center"><br>
+        <div class="contentbar">
+          <h1>Fill nurse Details to Update</h1><br>
+  <form action="{{ url_for('nurse_info')}}" method="post" autocomplete="off">
+    <input type="text" name="nurse_id" placeholder="enter nurse_id" class="textbox" id="nurse_id" required><br>
+    <input type="text" name="nurse_name" placeholder="enter nurse_name" class="textbox" id="nurse_name" required><br>
+    <input type="text" name="phone_number" placeholder="enter phone_no" class="textbox" id="phone_number" required><br><br>
+    <input type="submit" class="btn" value="register">
+  </form>
+</div>
+</div>
+</div>
+</body>

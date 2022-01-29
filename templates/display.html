@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            <h2>Your Details</h2>
+        </div>
+        {% block content %}
+        <div class="card-body">
+            <table class="table table-hover">
+                <tr>
+                    <td>Name:   </td>
+                    <td>{{ patient[2] }}</td>
+                </tr>
+                <tr>
+                    <td>Email ID:   </td>
+                    <td>{{ patient[0] }}</td>
+                </tr>
+                <tr>
+                    <td>DOB:   </td>
+                    <td>{{ patient[3] }}</td>
+                </tr>
+                <tr>
+                    <td>Blood Group:   </td>
+                    <td>{{ patient[4] }}</td>
+                </tr>
+                <tr>
+                    <td>Sex: </td>
+                    <td>{{ patient[5] }}</td>
+                </tr>
+            </table>
+        </div>
+        {% endblock %}
+    </div>
+{% endblock body %}

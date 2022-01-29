@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            <h2>Your Details</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <tr>
+                    <td> Name </td>
+                    <td>{{ doctor[2] }}</td>
+                </tr>
+                <tr>
+                    <td> mail-id</td>
+                    <td>{{ doctor[0] }}</td>
+                </tr>
+                <tr>
+                    <td>availableDate: </td>
+                    <td>{{ doctor[3] }}</td>
+                </tr>
+            </table>
+            <a class="btn btn-primary" href="{{url_for('doctorUpdate')}}">Edit</a>
+            <a class="btn btn-primary" href="{{url_for('doctorIndex')}}">Back</a>
+        </div>
+    </div>
+{% endblock body %}

@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+  <div class="msg">{{ msg }}</div>
+  <div class="card">
+    <div class="card-body d-grid gap-2 col-6 mx-auto ">
+    <a class="btn btn-outline-primary" href="{{url_for('makeappointment')}}">Make An Appointment</a>
+    <a class="btn btn-outline-primary" href="{{url_for('appointments')}}">My Appointments</a>
+  </div>
+  </div>
+{% endblock body %}

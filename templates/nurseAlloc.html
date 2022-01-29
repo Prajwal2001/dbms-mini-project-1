@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            <h2>Allocate Nurse</h2>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('nurseAlloc')}}" method="post" autocomplete="off">
+                <div class="form-text">{{ msg }}</div>
+                <div class="mb-3 col">
+                    <input type="email" name="mailId" placeholder="Enter Patient mail-id" class="form-control" id="mailId" required>
+                </div>
+                <div class="mb-3 col">
+                    <input type="text" name="nurse_id" placeholder="Enter nurse-id" class="form-control" id="nurseId" required>
+                </div>
+                <div class="mb-3 col">
+                    date_in:<input type="date" name="dateIn" placeholder="Enter date_in" class="form-control" id="dateIn" required>
+                </div>
+                <div class="mb-3 col">
+                    date_out:<input type="date" name="dateOut" placeholder="Enter date_out" class="form-control" id="dateOut" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Allocate</button>
+            </form>
+        </div>
+    </div>
+{% endblock body %}

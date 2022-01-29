@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            <h2>Records</h2>
+        </div>
+        {% if not record %}
+        <div class="lead card-body">No records found.</div>
+        {% endif %}
+        {% for rec in record %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">RecordId    :  {{rec[1]}} </h5>
+                <div class="card-subtitle mb-2 text-muted">{{rec[0]}} </div>
+                <div class="card-text">Record Analysis : {{rec[2]}} </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock body %}

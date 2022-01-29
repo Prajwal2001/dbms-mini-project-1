@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            <h2>Enter Details to Update</h2>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('doctorUpdate') }}" method="post" autocomplete="off">
+                <div class="msg">{{ msg }}</div>
+                <div class="mb-3 col">
+                    <input type="email" name="docMailId" value="{{doctor[0]}}" placeholder="Enter Your mail-id" class="form-control" id="docMailId" required>
+                </div>
+                <div class="mb-3 col">
+                    <input type="password" name="passwd" placeholder="Enter Your Password" class="form-control" id="passwd" value="{{doctor[1]}}" required>
+                </div>
+                <div class="mb-3 col">
+                    <input type="text" name="docName" placeholder="Enter Your name" class="form-control" id="docName" value="{{doctor[2]}}" required>
+                </div>
+                <div class="mb-3 col">
+                    <input type="date" name="availableDate" placeholder="Enter available date" class="form-control" id="availableDate" value="{{doctor[3]}}" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+        </div>
+    </div>
+{% endblock body %}

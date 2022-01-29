@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            <h2>Your Details</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <tr>
+                    <td>Email ID:   </td>
+                    <td>{{ admin[0] }}</td>
+                </tr>
+                <tr>
+                    <td>Name:  </td>
+                    <td>{{ admin[2] }}</td>
+                </tr>
+            </table>
+            <a class="btn btn-primary" href="{{url_for('adminUpdate')}}">Edit</a>
+            <a class="btn btn-primary" href="{{url_for('adminIndex')}}">Back</a>
+        </div>
+    </div>
+</div>
+{% endblock body %}
