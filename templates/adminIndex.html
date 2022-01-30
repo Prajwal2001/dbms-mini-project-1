@@ -4,16 +4,31 @@
   <div class="card-header">My Account</div>
   <div class="card-body gap-2 d-grid">
     <div class="btn-group-vertical">
-      <a class="btn btn-success" href="{{url_for('nurseAlloc')}}">Allocate Nurse</a>
-      <a class="btn btn-success" href="{{url_for('doctorsList')}}">Doctor Profiles</a>
-      <a class="btn btn-success" href="{{url_for('selectPatientforRecord')}}">View Patient Record</a>
-    </div>
-    <div class="btn-group-vertical">
       <a class="btn btn-success" href="{{url_for('takes')}}">Add dosage for Patient</a>
       <a class="btn btn-success" href="{{url_for('testAdd')}}">Add Test Taken</a>
-      <a class="btn btn-success" href="{{url_for('recordUpdate')}}">Update Record</a>
-      <a class="btn btn-success" href="{{url_for('selectPatientforRecord')}}">Appointments</a>
+    </div>
+    <div class="btn-group-vertical">
+      <a class="btn btn-success" href="{{url_for('patientAdd')}}">Add Patient</a>
+      <a class="btn btn-success" href="{{url_for('patients')}}">Patients</a>
+    </div>
+    <div class="btn-group-vertical">
+      <a class="btn btn-success" href="{{url_for('doctorAdd')}}">Add Doctor</a>
+      <a class="btn btn-success" href="{{url_for('doctorUpdate')}}">Update Doctor</a>
+      <a class="btn btn-success" href="{{url_for('doctors')}}">Doctors</a>
+    </div>
+    <div class="btn-group-vertical">
+      <a class="btn btn-success" href="{{url_for('appointmentAdd')}}">Add Appoitment</a>
+      <a class="btn btn-success" href="{{url_for('appointments')}}">Appointments</a>
+    </div>
+    <div class="btn-group-vertical">
+      <a class="btn btn-success" href="{{url_for('nurseAlloc')}}">Allocate Nurse</a>
       <a class="btn btn-success" href="{{url_for('nurseAdd')}}">Add Nurse</a>
+      <a class="btn btn-success" href="{{url_for('nurses')}}">Nurses</a>
+    </div>
+    <div class="btn-group-vertical">
+      <a class="btn btn-success" href="{{url_for('recordAdd')}}">Add Record</a>
+      <a class="btn btn-success" href="{{url_for('recordUpdate')}}">Update Record</a>
+      <a class="btn btn-success" href="{{url_for('records')}}">Records</a>
     </div>
     <div class="btn-group-vertical">
       <a class="btn btn-success" href="{{url_for('adminDisplay')}}">View Profile</a>
@@ -23,5 +38,4 @@
   </div>
 </div>
 <div class="form-text">{{ msg }}</div>
-<div id="Appointment-box"></div>
 {% endblock body %}

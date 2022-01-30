@@ -109,12 +109,12 @@ def update():
         return render_template("update.html", loggedIn=session['loggedIn'], patient = patient, msg = msg)
     return redirect(url_for('login'))
 
-@app.route("/appointments")
-def appointments():
+@app.route("/patientAppointments")
+def patientAppointments():
     if 'loggedIn' in session:
         cursor.execute(f'''SELECT * FROM appointment WHERE mailId = '{session['mailId']}' ''')
         appointments=cursor.fetchall()
-        return render_template("appointments.html", loggedIn=session['loggedIn'], appointments = appointments)
+        return render_template("patientAppointments.html", loggedIn=session['loggedIn'], appointments = appointments)
     return redirect(url_for('login'))
 
 @app.route('/makeappointment' , methods=['GET','POST'])
@@ -248,24 +248,6 @@ def adminUpdate():
         return render_template("adminUpdate.html", loggedIn = session['loggedIn'], admin=admin,  msg = msg)
     return redirect(url_for('adminLogin'))
 
-@app.route('/nurseAdd', methods=['GET','POST'])
-def nurseAdd():
-    msg=''
-    if 'loggedIn' in session:
-        if request.method=='POST':
-            nurseId=request.form['nurseId']
-            nurseName=request.form['nurseName']
-            phoneNumber=request.form['phoneNumber']
-            cursor.execute(f'''SELECT * FROM nurse WHERE nurseId = '{nurseId}' ''')
-            nurse=cursor.fetchone()
-            if nurse:
-                msg="Nurse account already exists"
-            else:
-                cursor.execute('INSERT INTO nurse VALUES(%s,%s,%s)',(nurseId,nurseName,phoneNumber))
-                msg="successfully nurse has registered"
-                return render_template('adminIndex.html', msg=msg)
-    return render_template('nurseAdd.html', msg = msg)
-
 @app.route('/doctorLogin',methods=['GET','POST'])
 def doctorLogin():
     msg=''
@@ -276,27 +258,10 @@ def doctorLogin():
         doctor=cursor.fetchone()
         if doctor:
             session['loggedIn'] = 2
-            session['docMailId'] = doctor[0]
+            session['mailId'] = doctor[0]
             return redirect(url_for('doctorIndex'))
         msg = 'Incorrect mail-id or password !'
     return render_template('doctorLogin.html', msg = msg)
-
-@app.route('/doctorRegister', methods =['GET','POST'])
-def doctorRegister():
-    msg = ''
-    if request.method == 'POST':
-        docMailId = request.form['docMailId']
-        passwd = request.form['passwd']
-        docName = request.form['docName']
-        availableDate = request.form['availableDate']
-        cursor.execute(f'''SELECT * FROM doctor WHERE docMailId = '{docMailId}' ''')
-        doctor = cursor.fetchone()
-        if doctor:
-            msg = 'Account already exists !'
-        else:
-            cursor.execute(f'''INSERT INTO doctor VALUES ('{docMailId}', '{passwd}', '{docName}', '{availableDate}') ''')
-            return redirect(url_for('doctorIndex'))
-    return render_template('doctorRegister.html', msg = msg)
 
 @app.route("/doctorIndex")
 def doctorIndex():
@@ -307,31 +272,9 @@ def doctorIndex():
 @app.route("/doctorDisplay")
 def doctorDisplay():
     if 'loggedIn' in session:
-        cursor.execute(f'''SELECT * FROM doctor WHERE docMailId = '{session['docMailId']}' ''')
+        cursor.execute(f'''SELECT * FROM doctor WHERE docMailId = '{session['mailId']}' ''')
         doctor = cursor.fetchone()
         return render_template("doctorDisplay.html", doctor = doctor, loggedIn = session['loggedIn'])
-    return redirect(url_for('doctorLogin'))
-
-@app.route("/doctorUpdate", methods =['GET', 'POST'])
-def doctorUpdate():
-    msg = ''
-    if 'loggedIn' in session:
-        if request.method == 'POST':
-            docMailId = request.form['docMailId']
-            docName=request.form['docName']
-            passwd = request.form['passwd']
-            availableDate = request.form['availableDate']
-            cursor.execute(f'''SELECT * FROM doctor WHERE docMailId = '{docMailId}' ''')
-            doctor = cursor.fetchone()
-            if not doctor:
-                msg = 'Account already exists !'
-            else:
-                cursor.execute(f'''UPDATE doctor SET  docMailId = '{docMailId}', passwd = '{passwd}', docName = '{docName}',availaibleDate= '{availableDate}' WHERE docMailId = '{session['mailId']}' ''')
-                msg = 'You have successfully updated !'
-        else:
-            cursor.execute(f'''SELECT * FROM doctor WHERE docMailId = '{session['docMailId']}' ''')
-            doctor = cursor.fetchone()
-        return render_template("doctorUpdate.html", loggedIn = session['loggedIn'], doctor=doctor, msg = msg)
     return redirect(url_for('doctorLogin'))
 
 
@@ -349,8 +292,8 @@ def nurseAlloc():
         return render_template('nurseAlloc.html', loggedIn = session['loggedIn'], msg = msg)
     return render_template('doctorLogin.html')
 
-@app.route("/records",methods=['GET','POST'])
-def records():
+@app.route("/myRecords",methods=['GET','POST'])
+def myRecords():
     if 'loggedIn' in session:
         cursor.execute(f'''SELECT * FROM record WHERE mailId = '{session['mailId']}' ''')
         record = cursor.fetchall()
@@ -389,6 +332,113 @@ def docAppointments():
 def doctorsList():
     cursor.execute('SELECT docMailId, docName, availableDate FROM doctor')
     return render_template('doctorsList.html', doctors = cursor.fetchall(), loggedIn=session['loggedIn'] if 'loggedIn' in session else None)
+
+@app.route("/doctorUpdate", methods =['GET', 'POST'])
+def doctorUpdate():
+    msg = ''
+    if 'loggedIn' not in session or session['loggedIn']<2:
+        return redirect(url_for('home'))
+    if request.method == 'POST':
+        docMailId = request.form['docMailId']
+        docName=request.form['docName']
+        passwd = request.form['passwd']
+        availableDate = request.form['availableDate']
+        cursor.execute(f'''SELECT * FROM doctor WHERE docMailId = '{docMailId}' ''')
+        doctor = cursor.fetchone()
+        if not doctor:
+            msg = 'Account already exists !'
+        else:
+            cursor.execute(f'''UPDATE doctor SET  docMailId = '{docMailId}', passwd = '{passwd}', docName = '{docName}',availaibleDate= '{availableDate}' WHERE docMailId = '{session['mailId']}' ''')
+            msg = 'You have successfully updated !'
+    else:
+        cursor.execute(f'''SELECT * FROM doctor WHERE docMailId = '{session['mailId']}' ''')
+        doctor = cursor.fetchone()
+    return render_template("admin/doctorUpdate.html", loggedIn = session['loggedIn'], doctor=doctor, msg = msg)
+
+@app.route("/patientAdd", methods=['GET', 'POST'])
+def patientAdd():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    return render_template("admin/patientAdd.html")
+
+@app.route("/doctorAdd", methods=['GET', 'POST'])
+def doctorAdd():
+    msg = ''
+    #if 'loggedIn' not in session or session['loggedIn']!=3:
+    #    return redirect(url_for('home'))
+    if request.method == 'POST':
+        docMailId = request.form['docMailId']
+        passwd = request.form['passwd']
+        docName = request.form['docName']
+        availableDate = request.form['availableDate']
+        cursor.execute(f'''SELECT * FROM doctor WHERE docMailId = '{docMailId}' ''')
+        doctor = cursor.fetchone()
+        if doctor:
+            msg = 'Account already exists !'
+        else:
+            cursor.execute(f'''INSERT INTO doctor VALUES ('{docMailId}', '{passwd}', '{docName}', '{availableDate}') ''')
+            return redirect(url_for('home'))
+    return render_template("admin/doctorAdd.html", msg=msg, loggedIn=session['loggedIn'] if 'loggedIn' in session else None)
+
+@app.route("/appointmentAdd", methods=['GET', 'POST'])
+def appointmentAdd():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    return render_template("admin/appointmentAdd.html")
+
+@app.route('/nurseAdd', methods=['GET','POST'])
+def nurseAdd():
+    msg=''
+    if 'loggedIn' in session:
+        if request.method=='POST':
+            nurseId=request.form['nurseId']
+            nurseName=request.form['nurseName']
+            phoneNumber=request.form['phoneNumber']
+            cursor.execute(f'''SELECT * FROM nurse WHERE nurseId = '{nurseId}' ''')
+            nurse=cursor.fetchone()
+            if nurse:
+                msg="Nurse account already exists"
+            else:
+                cursor.execute('INSERT INTO nurse VALUES(%s,%s,%s)',(nurseId,nurseName,phoneNumber))
+                msg="successfully nurse has registered"
+                return render_template('adminIndex.html', msg=msg)
+    return render_template('nurseAdd.html', msg = msg)
+
+@app.route("/recordAdd", methods=['GET', 'POST'])
+def recordAdd():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    return render_template("admin/recordAdd.html")
+
+@app.route("/patients", methods=['GET', 'POST'])
+def patients():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    return render_template("admin/patients.html")
+
+@app.route("/doctors", methods=['GET', 'POST'])
+def doctors():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    return render_template("admin/doctors.html")
+
+@app.route("/appointments", methods=['GET', 'POST'])
+def appointments():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    return render_template("admin/appointments.html")
+
+@app.route("/nurses", methods=['GET', 'POST'])
+def nurses():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    return render_template("admin/nurses.html")
+
+@app.route("/records", methods=['GET', 'POST'])
+def records():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    return render_template("admin/records.html")
 
 if __name__ == "__main__":
     app.debug=True

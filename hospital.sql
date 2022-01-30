@@ -2,8 +2,6 @@ CREATE DATABASE IF NOT EXISTS hospital;
 USE hospital;
 
 DROP TABLE IF EXISTS admin;
-DROP TABLE IF EXISTS bookings;
-DROP TABLE IF EXISTS rooms;
 DROP TABLE IF EXISTS testDesc;
 DROP TABLE IF EXISTS tests;
 DROP TABLE IF EXISTS record;
@@ -107,23 +105,6 @@ FOREIGN KEY (testId) REFERENCES tests(testId),
 FOREIGN KEY (mailId) REFERENCES patient(mailId)
 );
 
-CREATE TABLE rooms(
-roomNo int,
-blockNo varchar(10),
-PRIMARY KEY(roomNo, blockNo)
-);
-
-CREATE TABLE bookings(
-mailId varchar(20),
-roomNo int,
-blockNo varchar(10),
-dateIn date,
-dateOut date,
-PRIMARY KEY(mailId, dateIn),
-FOREIGN KEY (mailId) REFERENCES patient(mailId),
-FOREIGN KEY(roomNo, blockNo) REFERENCES rooms(roomNo, blockNo)
-);
-
 CREATE TABLE admin(
 mailId varchar(20) PRIMARY KEY,
 passwd varchar(20),
@@ -200,18 +181,6 @@ VALUES
   (600006,'covid19 test'),
   (600007,'wbc test');
 
-INSERT INTO rooms(roomNo, blockNo) 
-VALUES
-  (100,'A'),
-  (101,'Ab'),
-  (102,'B'),
-  (103,'B'),
-  (104,'C'),
-  (105,'Ca'),
-  (106,'Cb');
-
 INSERT INTO record VALUES
   ('1@gmail.com', 1, 'The Patient is fine'),
   ('1@gmail.com', 2, 'The Patient Physically fine, but requires psychological therapy');
-  
-  SELECT * FROM record WHERE mailId='1@gmail.com';
