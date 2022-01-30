@@ -37,8 +37,8 @@ mailId varchar(20) NOT NULL,
 appointmentDate date NOT NULL,
 docMailId varchar(20) NOT NULL,
 PRIMARY KEY(mailId, appointmentDate, docMailid),
-FOREIGN KEY (mailId) REFERENCES patient(mailId),
-FOREIGN KEY (docMailId) REFERENCES doctor(docMailId)
+FOREIGN KEY (mailId) REFERENCES patient(mailId) ON DELETE CASCADE,
+FOREIGN KEY (docMailId) REFERENCES doctor(docMailId) ON DELETE CASCADE
 );
 
 CREATE TABLE medicines(
@@ -52,15 +52,15 @@ medicineId varchar(6) NOT NULL,
 quantity numeric(3) NOT NULL,
 doseDate date NOT NULL,
 PRIMARY KEY(mailId, medicineId, doseDate),
-FOREIGN KEY (medicineId) REFERENCES medicines(medicineId),
-FOREIGN KEY (mailId) REFERENCES patient(mailId)
+FOREIGN KEY (medicineId) REFERENCES medicines(medicineId) ON DELETE CASCADE,
+FOREIGN KEY (mailId) REFERENCES patient(mailId) ON DELETE CASCADE
 );
 
 CREATE TABLE specialization(
 docMailId varchar(20) NOT NULL,
 specialization varchar(6) NOT NULL,
 PRIMARY KEY(docMailId, specialization),
-FOREIGN KEY(docMailId) REFERENCES doctor(docMailId)
+FOREIGN KEY(docMailId) REFERENCES doctor(docMailId) ON DELETE CASCADE
 );
 
 CREATE TABLE nurse(
@@ -78,16 +78,16 @@ mailId varchar(20) NOT NULL,
 dateIn date NOT NULL,
 dateOut date,
 PRIMARY KEY(mailId,dateIn),
-FOREIGN KEY (mailId) REFERENCES patient(mailId),
-FOREIGN KEY (nurseId) REFERENCES nurse(nurseId),
-FOREIGN KEY (docMailId) REFERENCES doctor(docMailId)
+FOREIGN KEY (mailId) REFERENCES patient(mailId) ON DELETE CASCADE,
+FOREIGN KEY (nurseId) REFERENCES nurse(nurseId) ON DELETE CASCADE,
+FOREIGN KEY (docMailId) REFERENCES doctor(docMailId) ON DELETE CASCADE
 );
 
 CREATE TABLE record(
 mailId varchar(20) NOT NULL,
 recordId int PRIMARY KEY,
 Analysis text,
-FOREIGN KEY(mailId) REFERENCES patient(mailId)
+FOREIGN KEY(mailId) REFERENCES patient(mailId) ON DELETE CASCADE
 );
 
 CREATE TABLE tests(
@@ -101,8 +101,8 @@ testId int NOT NULL,
 testDate date,
 Analysis text,
 PRIMARY KEY(mailId, testId, testDate),
-FOREIGN KEY (testId) REFERENCES tests(testId),
-FOREIGN KEY (mailId) REFERENCES patient(mailId)
+FOREIGN KEY (testId) REFERENCES tests(testId) ON DELETE CASCADE,
+FOREIGN KEY (mailId) REFERENCES patient(mailId) ON DELETE CASCADE
 );
 
 CREATE TABLE admin(

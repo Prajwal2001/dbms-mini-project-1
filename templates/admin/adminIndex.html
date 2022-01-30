@@ -3,33 +3,30 @@
 <div class="card shadow mb-5 bg-body rounded">
   <div class="card-header">Admin Dashboard</div>
   <div class="card-body gap-2 d-grid">
-    <div class="btn-group-vertical">
-      <a class="btn btn-success" href="{{url_for('patientAdd')}}">Add Patient</a>
-      <a class="btn btn-success" href="{{url_for('update')}}">Update Patient</a>
-      <a class="btn btn-success" href="{{url_for('patients')}}">Patients</a>
+    <div class="btn-group">
+      <a class="btn btn-success" href="{{url_for('patients')}}" style="width: calc(100% - 250px);">Patients</a>
+      <a class="btn btn-warning" href="{{url_for('patientAdd')}}"><i class="bi bi-person-plus-fill"></i>Add Patient</a>
     </div>
-    <div class="btn-group-vertical">
-      <a class="btn btn-success" href="{{url_for('doctorAdd')}}">Add Doctor</a>
-      <a class="btn btn-success" href="{{url_for('doctorUpdate')}}">Update Doctor</a>
-      <a class="btn btn-success" href="{{url_for('doctors')}}">Doctors</a>
+    <div class="btn-group">
+      <a class="btn btn-success" href="{{url_for('doctors')}}" style="width: calc(100% - 250px);">Doctors</a>
+      <a class="btn btn-warning" href="{{url_for('doctorAdd')}}"><i class="bi bi-person-plus-fill"></i>Add Doctor</a>
     </div>
-    <div class="btn-group-vertical">
-      <a class="btn btn-success" href="{{url_for('appointmentAdd')}}">Add Appoitment</a>
-      <a class="btn btn-success" href="{{url_for('appointments')}}">Appointments</a>
+    <div class="btn-group">
+      <a class="btn btn-success" href="{{url_for('nurses')}}" style="width: calc(100% - 250px);">Nurses</a>
+      <a class="btn btn-warning" href="{{url_for('nurseAdd')}}"><i class="bi bi-person-plus-fill"></i>Add Nurse</a>
     </div>
-    <div class="btn-group-vertical">
-      <a class="btn btn-success" href="{{url_for('nurseAlloc')}}">Allocate Nurse</a>
-      <a class="btn btn-success" href="{{url_for('nurseAdd')}}">Add Nurse</a>
-      <a class="btn btn-success" href="{{url_for('nurses')}}">Nurses</a>
+    <div class="btn-group">
+      <a class="btn btn-success" href="{{url_for('records')}}" style="width: calc(100% - 250px);">Records</a>
+      <a class="btn btn-warning" href="{{url_for('recordAdd')}}"><i class="bi bi-clipboard-plus"></i>Add Record</a>
     </div>
-    <div class="btn-group-vertical">
-      <a class="btn btn-success" href="{{url_for('recordAdd')}}">Add Record</a>
-      <a class="btn btn-success" href="{{url_for('recordUpdate')}}">Update Record</a>
-      <a class="btn btn-success" href="{{url_for('records')}}">Records</a>
+    <div class="btn-group">
+      <a class="btn btn-success" href="{{url_for('appointments')}}" style="width: calc(100% - 250px);">Appointments</a>
+      <a class="btn btn-warning" href="{{url_for('appointmentAdd')}}"><i class="bi bi-bookmark-plus-fill"></i>Add Appointment</a>
     </div>
     <div class="btn-group-vertical">
       <a class="btn btn-success" href="{{url_for('takes')}}">Add dosage for Patient</a>
       <a class="btn btn-success" href="{{url_for('testAdd')}}">Add Test Taken</a>
+      <a class="btn btn-success" href="{{url_for('nurseAlloc')}}">Allocate Nurse</a>
     </div>
     <div class="btn-group-vertical">
       <a class="btn btn-success" href="{{url_for('adminDisplay')}}">View Profile</a>

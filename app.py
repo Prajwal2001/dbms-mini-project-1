@@ -374,6 +374,37 @@ def patientAdd():
             return redirect(url_for('home'))
     return render_template("admin/patientAdd.html", msg=msg, loggedIn=session['loggedIn'] if 'loggedIn' in session else None)
 
+@app.route("/patientUpdate/<patMailId>", methods=['GET', 'POST'])
+def patientUpdate(patMailId):
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    msg = ''
+    if request.method == 'POST':
+            mailId = request.form['mailId']
+            passwd = request.form['passwd']
+            PName = request.form['PName']
+            dob = request.form['dob']
+            bloodGroup = request.form['bloodGroup']
+            sex = request.form['sex']
+            cursor.execute(f'''SELECT * FROM patient WHERE mailId = '{mailId}' ''')
+            patient = cursor.fetchone()
+            if patient and patient[0]!=patMailId:
+                msg = 'Mail-Id already in use!'
+            else:
+                cursor.execute(f'''UPDATE patient SET  mailId = '{mailId}', passwd = '{passwd}', PName = '{PName}', dob = '{dob}', bloodGroup = '{bloodGroup}', sex = '{sex}'  WHERE mailId = '{patMailId}' ''')
+            return redirect(url_for('patients'))
+    else:
+        cursor.execute(f"SELECT * FROM patient WHERE mailId = '{patMailId}'")
+        patient = cursor.fetchone()
+        return render_template("admin/patientUpdate.html", patient=patient, loggedIn = session['loggedIn'], msg=msg)
+
+@app.route("/patientDelete/<patMailId>")
+def patientDelete(patMailId):
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    cursor.execute(f'''DELETE FROM patient WHERE mailId = '{patMailId}' ''')
+    return redirect(url_for('patients'))
+
 @app.route("/doctorAdd", methods=['GET', 'POST'])
 def doctorAdd():
     msg = ''
@@ -427,7 +458,9 @@ def recordAdd():
 def patients():
     if 'loggedIn' not in session or session['loggedIn']!=3:
         return redirect(url_for('home'))
-    return render_template("admin/patients.html")
+    cursor.execute(f'''SELECT * FROM patient ''')
+    patients=cursor.fetchall()
+    return render_template("admin/patients.html", loggedIn=session['loggedIn'], patients=patients)
 
 @app.route("/doctors", methods=['GET', 'POST'])
 def doctors():
