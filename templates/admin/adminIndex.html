@@ -1,14 +1,11 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="card shadow mb-5 bg-body rounded">
-  <div class="card-header">My Account</div>
+  <div class="card-header">Admin Dashboard</div>
   <div class="card-body gap-2 d-grid">
     <div class="btn-group-vertical">
-      <a class="btn btn-success" href="{{url_for('takes')}}">Add dosage for Patient</a>
-      <a class="btn btn-success" href="{{url_for('testAdd')}}">Add Test Taken</a>
-    </div>
-    <div class="btn-group-vertical">
       <a class="btn btn-success" href="{{url_for('patientAdd')}}">Add Patient</a>
+      <a class="btn btn-success" href="{{url_for('update')}}">Update Patient</a>
       <a class="btn btn-success" href="{{url_for('patients')}}">Patients</a>
     </div>
     <div class="btn-group-vertical">
@@ -29,6 +26,10 @@
       <a class="btn btn-success" href="{{url_for('recordAdd')}}">Add Record</a>
       <a class="btn btn-success" href="{{url_for('recordUpdate')}}">Update Record</a>
       <a class="btn btn-success" href="{{url_for('records')}}">Records</a>
+    </div>
+    <div class="btn-group-vertical">
+      <a class="btn btn-success" href="{{url_for('takes')}}">Add dosage for Patient</a>
+      <a class="btn btn-success" href="{{url_for('testAdd')}}">Add Test Taken</a>
     </div>
     <div class="btn-group-vertical">
       <a class="btn btn-success" href="{{url_for('adminDisplay')}}">View Profile</a>

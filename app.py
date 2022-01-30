@@ -180,7 +180,7 @@ def testAdd():
             testDate=request.form['testDate']
             cursor.execute(f'''INSERT INTO testDesc VALUES('{mailId}','{testId}','{testDate}', '{Analysis}')''')
             msg="Successfully updated"
-            return render_template('adminIndex.html', loggedIn=session['loggedIn'], msg=msg)
+            return render_template('admin/adminIndex.html', loggedIn=session['loggedIn'], msg=msg)
         else:
             msg='please fill out the form'
     return render_template('testAdd.html', msg = msg)
@@ -215,16 +215,15 @@ def recordUpdate():
 @app.route("/adminIndex")
 def adminIndex():
     if 'loggedIn' in session:
-        return render_template("adminIndex.html", loggedIn = session['loggedIn'])
+        return render_template("admin/adminIndex.html", loggedIn = session['loggedIn'])
     return redirect(url_for('adminLogin'))
 
 @app.route("/adminDisplay")
-
 def adminDisplay():
     if 'loggedIn' in session:
         cursor.execute(f'''SELECT * FROM admin WHERE mailId = '{session['mailId']}' ''')
         admin = cursor.fetchone()
-        return render_template("adminDisplay.html", loggedIn = session['loggedIn'], admin = admin)
+        return render_template("admin/adminDisplay.html", loggedIn = session['loggedIn'], admin = admin)
     return redirect(url_for('adminLogin'))
 
 @app.route("/adminUpdate", methods =['GET', 'POST'])
@@ -245,7 +244,7 @@ def adminUpdate():
         else:
             cursor.execute(f''' SELECT * FROM admin WHERE mailId = '{session['mailId']}' ''')
             admin = cursor.fetchone()
-        return render_template("adminUpdate.html", loggedIn = session['loggedIn'], admin=admin,  msg = msg)
+        return render_template("admin/adminUpdate.html", loggedIn = session['loggedIn'], admin=admin,  msg = msg)
     return redirect(url_for('adminLogin'))
 
 @app.route('/doctorLogin',methods=['GET','POST'])
@@ -357,9 +356,23 @@ def doctorUpdate():
 
 @app.route("/patientAdd", methods=['GET', 'POST'])
 def patientAdd():
-    if 'loggedIn' not in session or session['loggedIn']!=3:
-        return redirect(url_for('home'))
-    return render_template("admin/patientAdd.html")
+    #if 'loggedIn' not in session or session['loggedIn']!=3:
+    #    return redirect(url_for('home'))
+    msg = ''
+    if request.method == 'POST':
+        mailId = request.form['mailId']
+        passwd = request.form['passwd']
+        PName = request.form['PName']
+        dob = request.form['dob']
+        bloodGroup = request.form['bloodGroup']
+        sex = request.form['sex']
+        cursor.execute(f'''SELECT * FROM patient WHERE mailId = '{mailId}' ''')
+        if cursor.fetchone():
+            msg = 'Account already exists !'
+        else:
+            cursor.execute(f'''INSERT INTO patient VALUES ('{mailId}', '{passwd}', '{PName}', '{dob}', '{bloodGroup}', '{sex}')''')
+            return redirect(url_for('home'))
+    return render_template("admin/patientAdd.html", msg=msg, loggedIn=session['loggedIn'] if 'loggedIn' in session else None)
 
 @app.route("/doctorAdd", methods=['GET', 'POST'])
 def doctorAdd():
@@ -401,7 +414,7 @@ def nurseAdd():
             else:
                 cursor.execute('INSERT INTO nurse VALUES(%s,%s,%s)',(nurseId,nurseName,phoneNumber))
                 msg="successfully nurse has registered"
-                return render_template('adminIndex.html', msg=msg)
+                return render_template('admin/adminIndex.html', msg=msg)
     return render_template('nurseAdd.html', msg = msg)
 
 @app.route("/recordAdd", methods=['GET', 'POST'])
