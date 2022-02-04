@@ -107,8 +107,13 @@
       </nav>
     <div class="container-fluid">
       <div class="block-body row">
-      {% block body %}
-      {% endblock %}
+        {% if loggedIn and loggedIn==3 %}
+          {% include 'admin/adminDashboard.html' %}
+        {% endif %}
+        <div class="col">
+        {% block body %}
+        {% endblock %}
+        </div>
       </div>
     </div>
     <!--Bootstrap Bundle -->

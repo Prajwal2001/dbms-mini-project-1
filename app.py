@@ -24,7 +24,7 @@ def redirectPg():
         elif session['loggedIn']==2:
             return redirect(url_for('doctorIndex'))
         else:
-            return redirect(url_for('adminIndex'))
+            return redirect(url_for('patients'))
     return redirect('/home')
 
 @app.route('/home')
@@ -476,10 +476,18 @@ def appointmentAdd():
         return redirect(url_for('home'))
     return render_template("admin/appointmentAdd.html")
 
+@app.route("/nurses", methods=['GET', 'POST'])
+def nurses():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    cursor.execute(f'''SELECT * FROM nurse ''')
+    nurses=cursor.fetchall()
+    return render_template("admin/nurses.html", loggedIn=session['loggedIn'], nurses=nurses)
+
 @app.route('/nurseAdd', methods=['GET','POST'])
 def nurseAdd():
     msg=''
-    if 'loggedIn' in session:
+    if 'loggedIn' in session and session['loggedIn']==3:
         if request.method=='POST':
             nurseId=request.form['nurseId']
             nurseName=request.form['nurseName']
@@ -492,7 +500,37 @@ def nurseAdd():
                 cursor.execute('INSERT INTO nurse VALUES(%s,%s,%s)',(nurseId,nurseName,phoneNumber))
                 msg="successfully nurse has registered"
                 return render_template('admin/adminIndex.html', msg=msg)
-    return render_template('nurseAdd.html', msg = msg)
+        return render_template('admin/nurseAdd.html', loggedIn=session['loggedIn'], msg = msg)
+    return redirect(url_for('home'))
+
+
+@app.route("/nurseUpdate/<mailId>", methods=['GET', 'POST'])
+def nurseUpdate(mailId):
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    msg = ''
+    if request.method == 'POST':
+            nurseId = request.form['nurseId']
+            passwd = request.form['passwd']
+            nurseName = request.form['nurseName']
+            cursor.execute(f'''SELECT * FROM nurse WHERE nurseId = '{mailId}' ''')
+            nurse = cursor.fetchone()
+            if nurse and nurse[0]!=mailId:
+                msg = 'Mail-Id already in use!'
+            else:
+                cursor.execute(f'''UPDATE nurse SET nurseId = '{nurseId}', passwd = '{passwd}', nurseName = '{nurseName}' WHERE nurseId = '{mailId}' ''')
+            return redirect(url_for('nurses'))
+    else:
+        cursor.execute(f"SELECT * FROM nurse WHERE nurseId = '{mailId}'")
+        nurse = cursor.fetchone()
+        return render_template("admin/nurseUpdate.html", nurse=nurse, loggedIn = session['loggedIn'], msg=msg)
+
+@app.route("/nurseDelete/<mailId>")
+def nurseDelete(mailId):
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    cursor.execute(f'''DELETE FROM nurse WHERE nurseId = '{mailId}' ''')
+    return redirect(url_for('nurses'))
 
 @app.route("/recordAdd", methods=['GET', 'POST'])
 def recordAdd():
@@ -505,12 +543,6 @@ def appointments():
     if 'loggedIn' not in session or session['loggedIn']!=3:
         return redirect(url_for('home'))
     return render_template("admin/appointments.html")
-
-@app.route("/nurses", methods=['GET', 'POST'])
-def nurses():
-    if 'loggedIn' not in session or session['loggedIn']!=3:
-        return redirect(url_for('home'))
-    return render_template("admin/nurses.html")
 
 @app.route("/records", methods=['GET', 'POST'])
 def records():

@@ -28,6 +28,7 @@ CREATE TABLE doctor(
 docMailId varchar(20),
 passwd varchar(20) NOT NULL,
 docName varchar(30) NOT NULL,
+sex char(1) NOT NULL,
 availableDate date ,
 PRIMARY KEY (docMailId)
 );
@@ -64,20 +65,19 @@ FOREIGN KEY(docMailId) REFERENCES doctor(docMailId) ON DELETE CASCADE
 );
 
 CREATE TABLE nurse(
-nurseId int NOT NULL,
+nurseId varchar(20) PRIMARY KEY,
 nurseName varchar(20) NOT NULL,
 phoneNumber numeric(10) NOT NULL,
-availableDate date,
-PRIMARY KEY (nurseId)
+availableDate date
 );
 
 CREATE TABLE nursealloc(
 docMailId varchar(20) NOT NULL,
-nurseId int NOT NULL,
+nurseId varchar(20) NOT NULL,
 mailId varchar(20) NOT NULL,
 dateIn date NOT NULL,
 dateOut date,
-PRIMARY KEY(mailId,dateIn),
+PRIMARY KEY(mailId, dateIn),
 FOREIGN KEY (mailId) REFERENCES patient(mailId) ON DELETE CASCADE,
 FOREIGN KEY (nurseId) REFERENCES nurse(nurseId) ON DELETE CASCADE,
 FOREIGN KEY (docMailId) REFERENCES doctor(docMailId) ON DELETE CASCADE
@@ -125,7 +125,7 @@ VALUES
   ('2@gmail.com','0000','Dubravka','1998-06-26','B+','M'),
   ('3@gmail.com','0000','Fabio','2007-05-22','O+','F'),
   ('4@gmail.com','0000','Freddy','2007-05-22','O+','M'),
-  ('5@gmail.com','0000','Roxy','1972-11-04','AB+','M'),
+  ('5@gmail.com','0000','Roxy','1972-11-04','AB+','F'),
   ('6@gmail.com','0000','Rohan','1977-10-18','B+','M'),
   ('7@gmail.com','0000','Arjun','1975-10-15','A+','M'),
   ('8@gmail.com','0000','Ajay','1976-11-27','O+','M'),
@@ -142,28 +142,28 @@ VALUES
   (7,'Fragnuma'),
   (8,'Vitrarabine');
   
-INSERT INTO doctor(docMailid, passwd, docName, availableDate) 
+INSERT INTO doctor(docMailid, passwd, docName, sex) 
 VALUES
-  ('dr1@gmail.com','0000','Preethi','2021-11-12'),
-  ('dr2@gmail.com','0000','Shreesha','2021-11-12'),
-  ('dr3@gmail.com','0000','Varun','2020-11-14'),
-  ('dr4@gmail.com','0000','Suhas','2020-10-12'),
-  ('dr5@gmail.com','0000','Jessie','2020-11-08'),
-  ('dr6@gmail.com','0000','James','2020-10-12'),
-  ('dr7@gmail.com','0000','Toby','2020-11-21'),
-  ('dr8@gmail.com','0000','Rahul','2020-12-12'),
-  ('dr9@gmail.com','0000','Naveen','2020-08-12');
+  ('dr1@gmail.com','0000','Preethi','F'),
+  ('dr2@gmail.com','0000','Shreesha','M'),
+  ('dr3@gmail.com','0000','Varun','M'),
+  ('dr4@gmail.com','0000','Suhas','M'),
+  ('dr5@gmail.com','0000','Jessie','F'),
+  ('dr6@gmail.com','0000','James','M'),
+  ('dr7@gmail.com','0000','Toby','M'),
+  ('dr8@gmail.com','0000','Norn','F'),
+  ('dr9@gmail.com','0000','Naveen','M');
 
 INSERT INTO nurse(nurseId, nurseName, phoneNumber) 
 VALUES
-  (400000,'Manasa',9247775899),
-  (400001,'Anagha',9246665899),
-  (400002,'Jothi',9245555899),
-  (400003,'Emily',9244445899),
-  (400004,'Shivani',9241115899),
-  (400005,'Dia',9274775899),
-  (400006,'Demetria',9249975899),
-  (400007,'Sabina',9247775999);
+  ('n0@hp.com','Manasa',9247775899),
+  ('n1@hp.com','Anagha',9246665899),
+  ('n2@hp.com','Jothi',9245555899),
+  ('n3@hp.com','Emily',9244445899),
+  ('n4@hp.com','Shivani',9241115899),
+  ('n5@hp.com','Dia',9274775899),
+  ('n6@hp.com','Demetria',9249975899),
+  ('n7@hp.com','Sabina',9247775999);
 
 INSERT INTO appointment(mailId, appointmentDate, docMailId) 
 VALUES
