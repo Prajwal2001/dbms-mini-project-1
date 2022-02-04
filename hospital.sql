@@ -85,7 +85,7 @@ FOREIGN KEY (docMailId) REFERENCES doctor(docMailId) ON DELETE CASCADE
 
 CREATE TABLE record(
 mailId varchar(20) NOT NULL,
-recordId int PRIMARY KEY,
+recordId int auto_increment PRIMARY KEY,
 Analysis text,
 FOREIGN KEY(mailId) REFERENCES patient(mailId) ON DELETE CASCADE
 );

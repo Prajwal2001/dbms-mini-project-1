@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="card shadow mb-5 bg-body rounded">
+        <div class="card-header">
+            <h2>Create New Record</h2>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('recordAdd')}}" method="post" autocomplete="off">
+                <div class="form-text">{{ msg }}</div>
+                <div class="mb-3 col">
+                    <input type="text" name="mailId" placeholder="Enter mail-id" class="form-control" id="mailId" required>
+                </div>
+                <div class="mb-3 col">
+                    <input type="text" name="Analysis" placeholder="Enter Report Data" class="form-control" id="Analysis" required>
+                </div>
+                <button type="submit" class="btn btn-success">Add</button>
+            </form>
+        </div>
+    </div>
+{% endblock body %}

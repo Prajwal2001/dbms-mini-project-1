@@ -20,7 +20,7 @@
           {% elif loggedIn==2 %}
           <a class="navbar-brand" href="{{url_for('doctorIndex')}}"> Hospital</a>
           {% elif loggedIn==3 %}
-          <a class="navbar-brand" href="{{url_for('adminIndex')}}"> Hospital</a>
+          <a class="navbar-brand" href="{{url_for('patients')}}"> Hospital</a>
           {% else %}
           <a class="navbar-brand" href="/">Hospital</a>
           {% endif %}
