@@ -26,9 +26,12 @@
       <a class="btn btn-success" href="{{url_for('appointments')}}" style="width: 100%;">Appointments</a>
       <a class="btn btn-warning" href="{{url_for('appointmentAdd')}}"><i class="bi bi-plus-lg"></i></a>
     </div>
-    <div class="btn-group-vertical">
-      <a class="btn btn-success" href="{{url_for('takes')}}">Add Dosage for Patient</a>
-      <a class="btn btn-success" href="{{url_for('testAdd')}}">Add Test Taken</a>
+    <div class="btn-group">
+      <a class="btn btn-success" href="#" style="width: 100%;">Tests</a>
+      <a class="btn btn-warning" href="{{url_for('testAdd')}}"><i class="bi bi-plus-lg"></i></a>
+    </div>
+    <div class="btn-group">
+      <a class="btn btn-success" href="{{url_for('takes')}}">Add Dosage</a>
     </div>
     <div class="btn-group-vertical">
       <a class="btn btn-success" href="{{url_for('adminDisplay')}}">View Profile</a>
