@@ -3,6 +3,9 @@
 <div class="card">
     <div class="card-header"><h2>Doctors</h2></div>
     <div class="card-body">
+        {% if not doctors %}
+            No Doctors found
+        {% else %}
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
@@ -26,6 +29,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% endif %}
     </div>
 </div>
 {% endblock body %}
