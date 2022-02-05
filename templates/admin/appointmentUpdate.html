@@ -8,12 +8,15 @@
         <form action="{{appointment[0]}} {{appointment[1]}} {{appointment[2]}}" method="post" autocomplete="off">
             <div class="form-text">{{ msg }}</div>
             <div class="mb-3">
+                <label for="mailId" class="form-label">Patient Id</label>
                 <input type="email" name="mailId" placeholder="Enter Email ID" class="form-control" value="{{appointment[0]}}" id="mailId" required>
             </div>
             <div class="mb-3">
+                <label for="docMailId" class="form-label">Doctor Id</label>
                 <input type="email" name="docMailId" placeholder="Enter Doctor Id" class="form-control" value="{{appointment[2]}}" id="docMailId" required>
             </div>
             <div class="mb-3">
+                <label for="appointmentDate" class="form-label">Appointment Date</label>
                 <input type="date" name="appointmentDate" placeholder="Appointment Date" class="form-control" value="{{appointment[1]}}" id="appointmentDate" required>
             </div>
             <button type="submit" class="btn btn-success">Update</button>

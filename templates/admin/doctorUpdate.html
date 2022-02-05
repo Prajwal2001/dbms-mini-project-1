@@ -8,15 +8,19 @@
             <form action="{{doctor[0]}}" method="post" autocomplete="off">
                 <div class="msg">{{ msg }}</div>
                 <div class="mb-3 col">
+                    <label for="docMailId" class="form-label">Doctor Id</label>
                     <input type="email" name="docMailId" value="{{doctor[0]}}" placeholder="Enter mail-id" class="form-control" id="docMailId" required>
                 </div>
                 <div class="mb-3 col">
+                    <label for="passwd" class="form-label">Password</label>
                     <input type="password" name="passwd" placeholder="Enter Password" class="form-control" id="passwd" value="{{doctor[1]}}" required>
                 </div>
                 <div class="mb-3 col">
+                    <label for="docName" class="form-label">Name</label>
                     <input type="text" name="docName" placeholder="Enter name" class="form-control" id="docName" value="{{doctor[2]}}" required>
                 </div>
                 <div class="mb-3 col">
+                    <label for="availableDate" class="form-label">Available Date</label>
                     <input type="date" name="availableDate" placeholder="Enter available date" class="form-control" id="availableDate" value="{{doctor[3]}}" required>
                 </div>
                 <button type="submit" class="btn btn-success">Update</button>

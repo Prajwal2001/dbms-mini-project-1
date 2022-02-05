@@ -8,9 +8,11 @@
     <form action="{{ url_for('adminLogin')}}" method="post" autocomplete="off">
       <div class="form-text">{{ msg }}</div>
       <div class="mb-3 col">
-        <input type="email" name="mailId" placeholder="Enter Your Username" class="form-control" id="mailId" required>
+        <label for="mailId" class="form-label">Mail-id</label>
+        <input type="email" name="mailId" placeholder="Enter Your Mail-id" class="form-control" id="mailId" required>
       </div>
       <div class="mb-3 col">
+        <label for="passwd" class="form-label">Password</label>
         <input type="password" name="passwd" placeholder="Enter Your Password" class="form-control" id="passwd" required>
       </div>
       <button type="submit" class="btn btn-success">Login</button>

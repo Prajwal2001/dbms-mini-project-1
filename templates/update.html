@@ -8,22 +8,28 @@
         <form action="{{ url_for('update') }}" method="post" autocomplete="off">
             <div class="form-text">{{ msg }}</div>
             <div class="mb-3">
+                <label for="PName" class="form-label">Name</label>
+                <input type="text" name="PName" placeholder="Enter Your Name" class="form-control" value="{{patient[2]}}" id="PName" required>
+            </div>
+            <div class="mb-3">
+                <label for="mailId" class="form-label">Email-Id</label>
                 <input type="email" name="mailId" placeholder="Enter Your Email ID" class="form-control" value="{{patient[0]}}" id="mailId" required>
             </div>
             <div class="mb-3">
+                <label for="passwd" class="form-label">Password</label>
                 <input type="password" name="passwd" placeholder="Enter Your Password" class="form-control" value="{{patient[1]}}" id="passwd" required>
-            </div>
-            <div class="mb-3">
-                <input type="text" name="PName" placeholder="Enter Your Name" class="form-control" value="{{patient[2]}}" id="PName" required>
             </div>
             <div class="row">
                 <div class="mb-3 col">
+                    <label for="dob" class="form-label">Date of Birth</label>
                     <input type="date" name="dob" class="form-control" value="{{patient[3]}}" id="dob" required>
                 </div>
                 <div class="mb-3 col">
+                    <label for="bloodGroup" class="form-label">Blood Group</label>
                     <input type="text" name="bloodGroup" placeholder="Enter Your blood group" class="form-control" value="{{patient[4]}}" id="bloodGroup" required>
                 </div>
                 <div class="mb-3 col">
+                    <label for="sex" class="form-label">Sex</label>
                     <input type="text" name="sex" placeholder="Enter Your sex" class="form-control" value="{{patient[5]}}" id="sex" required>
                 </div>
             </div>

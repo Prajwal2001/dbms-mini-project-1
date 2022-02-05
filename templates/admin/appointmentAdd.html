@@ -6,12 +6,15 @@
             <form action="{{ url_for('appointmentAdd')}}" method="post" autocomplete="off">
                 <div class="form-text">{{ msg }}</div>
                 <div class="mb-3">
+                    <label for="mailId" class="form-label">Patient Id</label>
                     <input class="form-control" type="email" name="mailId" placeholder="Enter Patient Mail-id" id="mailId" required>
                 </div>
                 <div class="mb-3">
+                    <label for="docMailId" class="form-label">Doctor Id</label>
                     <input class="form-control" type="email" name="docMailId" placeholder="Enter Doctor Mail-id" id="docMailId" required>
                 </div>
                 <div class="mb-3">
+                    <label for="appointmentDate" class="form-label">Appointment Date</label>
                     <input class="form-control" type="date" name="appointmentDate" placeholder="Select Appointment Date" id="appointmentDate" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Add</button>

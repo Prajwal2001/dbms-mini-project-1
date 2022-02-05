@@ -8,16 +8,20 @@
       <form action="{{url_for('takes')}}" method="POST" autocomplete="OFF">
         <div class="msg">{{msg}}</div>
         <div class="mb-3">
-          <input type="email" name="mailId" placeholder="Enter mailId" class="form-control" required>
+          <label for="mailId" class="form-label">Mail-id</label>
+          <input type="email" name="mailId" placeholder="Enter mailId" class="form-control" id="mailId" required>
         </div>
         <div class="mb-3">
-          <input type="text" name="medicineId" placeholder="Enter medicineId" class="form-control" required>
+          <label for="medicineId" class="form-label">Medicine</label>
+          <input type="text" name="medicineId" placeholder="Enter medicineId" class="form-control" id="medicineId" required>
         </div>
         <div class="mb-3">
-          <input type="text" name="quantity" placeholder="Enter quantity" class="form-control" required>
+          <label for="quantity" class="form-label">Quantity</label>
+          <input type="text" name="quantity" placeholder="Enter quantity" class="form-control" id="quantity" required>
         </div>
         <div class="mb-3">
-          <input type="date" name="takes_date" placeholder="Enter the date" class="form-control" required>
+          <label for="takes_date" class="form-label">Date</label>
+          <input type="date" name="takes_date" placeholder="Enter the date" class="form-control" id="takes_date" required>
         </div>
         <button type="submit" class="btn btn-success">Add</button>
       </form>

@@ -11,9 +11,12 @@
       <a class="btn btn-success" href="{{url_for('doctors')}}" style="width: 100%;">Doctors</a>
       <a class="btn btn-warning" href="{{url_for('doctorAdd')}}"><i class="bi bi-plus-lg"></i></a>
     </div>
-    <div class="btn-group">
-      <a class="btn btn-success" href="{{url_for('nurses')}}" style="width: 100%;">Nurses</a>
-      <a class="btn btn-warning" href="{{url_for('nurseAdd')}}"><i class="bi bi-plus-lg"></i> </a>
+    <div class="btn-group-vertical">
+      <div class="btn-group">
+        <a class="btn btn-success" href="{{url_for('nurses')}}" style="width: 100%;">Nurses</a>
+        <a class="btn btn-warning" href="{{url_for('nurseAdd')}}"><i class="bi bi-plus-lg"></i> </a>
+      </div>
+      <a class="btn btn-secondary" href="{{url_for('nurseAlloc')}}">Allocate</a>
     </div>
     <div class="btn-group">
       <a class="btn btn-success" href="{{url_for('records')}}" style="width: 100%;">Records</a>
@@ -26,7 +29,6 @@
     <div class="btn-group-vertical">
       <a class="btn btn-success" href="{{url_for('takes')}}">Add Dosage for Patient</a>
       <a class="btn btn-success" href="{{url_for('testAdd')}}">Add Test Taken</a>
-      <a class="btn btn-success" href="{{url_for('nurseAlloc')}}">Allocate Nurse</a>
     </div>
     <div class="btn-group-vertical">
       <a class="btn btn-success" href="{{url_for('adminDisplay')}}">View Profile</a>

@@ -7,15 +7,18 @@
   <div class="card-body">
     <form action="{{ url_for('nurseAdd')}}" method="post" autocomplete="off">
       <div class="mb-3 col">
+        <label for="nurseId" class="form-label">Nurse Id</label>
         <input type="text" name="nurseId" placeholder="Enter Nurse Id" class="form-control" id="nurseId" required>
       </div>
       <div class="mb-3 col">
+        <label for="nurseName" class="form-label">Name</label>
         <input type="text" name="nurseName" placeholder="Enter Nurse Name" class="form-control" id="nurseName" required>
       </div>
       <div class="mb-3 col">
-        <input type="text" name="phoneNumber" placeholder="Enter Phone No." class="form-control" id="phoneNumber" required>
+        <label for="phoneNumber" class="form-label">Phone Number</label>
+        <input type="number" name="phoneNumber" placeholder="Enter Phone No." class="form-control" id="phoneNumber" required>
       </div>
-      <button type="submit" class="btn btn-success">register</button>
+      <button type="submit" class="btn btn-success">Register</button>
     </form>
 </div>
 {% endblock body %}

@@ -6,22 +6,28 @@
             <form action="{{ url_for('patientAdd')}}" method="post" autocomplete="off">
                 <div class="form-text">{{ msg }}</div>
                 <div class="mb-3">
+                    <label for="mailId" class="form-label">Mail-id</label>
                     <input class="form-control" type="email" name="mailId" placeholder="Enter Your Email ID" id="mailId" required>
                 </div>
                 <div class="mb-3">
+                    <label for="passwd" class="form-label">Password</label>
                     <input class="form-control" type="password" name="passwd" placeholder="Enter Your Password" id="passwd" required>
                 </div>
                 <div class="mb-3">
+                    <label for="PName" class="form-label">Name</label>
                     <input class="form-control" type="text" name="PName" placeholder="Enter Your name" id="PName" required>
                 </div>
                 <div class="row">
                     <div class="mb-3 col">
+                        <label for="dob" class="form-label">Date of Birth</label>
                         <input class="form-control" type="date" name="dob" placeholder="Enter Your age" id="dob" required>
                     </div>
                     <div class="mb-3 col">
+                        <label for="bloodGroup" class="form-label">Blood Group</label>
                         <input class="form-control" type="text" name="bloodGroup" placeholder="Enter Your blood group" id="bloodGroup" required>
                     </div>
                     <div class="mb-3 col">
+                        <label for="sex" class="form-label">Sex</label>
                         <input class="form-control" type="text" name="sex" placeholder="Enter M or F" id="sex" required>
                     </div>
                 </div>

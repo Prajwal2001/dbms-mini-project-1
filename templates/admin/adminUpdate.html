@@ -8,16 +8,19 @@
             <form action="{{ url_for('adminUpdate') }}" method="post" autocomplete="off">
                 <div class="msg">{{ msg }}</div>
                 <div class="mb-3 col">
+                    <label for="mail-id" class="form-label">Mail-id</label>
                     <input type="email" name="mailId" value="{{admin[0]}}" placeholder="Enter Your mail-id" class="form-control" id="mailId" required>
                 </div>
                 <div class="mb-3 col">
+                    <label for="passwd" class="form-label">Password</label>
                     <input type="password" name="passwd" placeholder="Enter Your Password" class="form-control" id="passwd" value="{{admin[1]}}" required>
                 </div>
                 <div class="mb-3 col">
+                    <label for="adminName" class="form-label">Name</label>
                     <input type="text" name="adminName" placeholder="Enter Your name" class="form-control" id="adminName" value="{{admin[2]}}" required>
                 </div>
                 <button type="submit" class="btn btn-success">Update</button>
-                <a class="btn btn-success" href="{{url_for('adminIndex')}}">Home</a>
+                <a class="btn btn-success" href="{{url_for('home')}}">Home</a>
             </form>
         </div>
     </div>

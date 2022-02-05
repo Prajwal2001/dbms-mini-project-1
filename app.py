@@ -482,14 +482,14 @@ def nurseUpdate(mailId):
     msg = ''
     if request.method == 'POST':
             nurseId = request.form['nurseId']
-            passwd = request.form['passwd']
+            phoneNumber = request.form['phoneNumber']
             nurseName = request.form['nurseName']
             cursor.execute(f'''SELECT * FROM nurse WHERE nurseId = '{mailId}' ''')
             nurse = cursor.fetchone()
             if nurse and nurse[0]!=mailId:
                 msg = 'Mail-Id already in use!'
             else:
-                cursor.execute(f'''UPDATE nurse SET nurseId = '{nurseId}', passwd = '{passwd}', nurseName = '{nurseName}' WHERE nurseId = '{mailId}' ''')
+                cursor.execute(f'''UPDATE nurse SET nurseId = '{nurseId}', phoneNumber = '{phoneNumber}', nurseName = '{nurseName}' WHERE nurseId = '{mailId}' ''')
             return redirect(url_for('nurses'))
     else:
         cursor.execute(f"SELECT * FROM nurse WHERE nurseId = '{mailId}'")

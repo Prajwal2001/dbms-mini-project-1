@@ -8,9 +8,11 @@
             <form action="{{record[1]}}" method="post" autocomplete="off">
                 <div class="msg">{{ msg }}</div>
                 <div class="mb-3 col">
+                    <label for="mailId" class="form-label">Patient Mail-id</label>
                     <input type="email" name="mailId" value="{{record[0]}}" placeholder="Enter mail-id" class="form-control" id="mailId" required>
                 </div>
                 <div class="mb-3 col">
+                    <label for="Analysis" class="form-label">Analysis</label>
                     <input type="text" name="Analysis" placeholder="Enter Report Data" class="form-control" id="Analysis" value="{{record[2]}}" required>
                 </div>
                 <button type="submit" class="btn btn-success">Update</button>

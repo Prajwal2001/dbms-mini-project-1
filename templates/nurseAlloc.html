@@ -8,16 +8,20 @@
             <form action="{{ url_for('nurseAlloc')}}" method="post" autocomplete="off">
                 <div class="form-text">{{ msg }}</div>
                 <div class="mb-3 col">
+                    <label for="mailId" class="form-label">Patient Id</label>
                     <input type="email" name="mailId" placeholder="Enter Patient mail-id" class="form-control" id="mailId" required>
                 </div>
                 <div class="mb-3 col">
+                    <label for="nurseId" class="form-label">Nurse Id</label>
                     <input type="text" name="nurse_id" placeholder="Enter nurse-id" class="form-control" id="nurseId" required>
                 </div>
                 <div class="mb-3 col">
-                    date_in:<input type="date" name="dateIn" placeholder="Enter date_in" class="form-control" id="dateIn" required>
+                    <label for="dateIn" class="form-label">Start Date</label>
+                    <input type="date" name="dateIn" placeholder="Enter Start Date" class="form-control" id="dateIn" required>
                 </div>
                 <div class="mb-3 col">
-                    date_out:<input type="date" name="dateOut" placeholder="Enter date_out" class="form-control" id="dateOut" required>
+                    <label for="dateOut" class="form-label">End Date</label>
+                    <input type="date" name="dateOut" placeholder="Enter End Date" class="form-control" id="dateOut" required>
                 </div>
                 <button type="submit" class="btn btn-success">Allocate</button>
             </form>

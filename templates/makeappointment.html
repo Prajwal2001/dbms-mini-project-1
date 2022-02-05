@@ -8,12 +8,14 @@
             <form action="{{ url_for('makeappointment') }}" method="post" autocomplete="off">
                 <div class="msg">{{ msg }}</div>
                 <div class="mb-3 col">
+                    <label for="docMailId" class="form-label">Doctor Id</label>
                     <input type="text" name="docMailId" placeholder="Enter doctor id" class="form-control" id="docMailId" required>
                 </div>
                 <div class="mb-3 col">
+                    <label for="appointmentDate" class="form-label">Appointment Date</label>
                     <input type="date" name ="appointmentDate" placeholder="Enter the date for appointment" class="form-control" id="appointmentDate" required>
                 </div>
-                <button type="submit" class="btn btn-success">Book Appointment</button>
+                <button type="submit" class="btn btn-success">Make Appointment</button>
             </form>
         </div>
     </div>

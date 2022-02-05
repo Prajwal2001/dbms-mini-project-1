@@ -6,14 +6,16 @@
       <legend><h2>Patient Login</h2></legend>
       <div class="form-text">{{ msg }}</div>
       <div class="mb-3">
+        <label for="mailId" class="form-label">Mail-id</label>
         <input type="email" name="mailId" placeholder="Enter Your Username" class="form-control" id="mailId" required>
       </div>
       <div class="mb-3">
+        <label for="passwd" class="form-label">Password</label>
         <input type="password" name="passwd" placeholder="Enter Your Password" class="form-control" id="passwd" required>
       </div>
       <input type="submit" class="btn btn-success" value="Login">
     </form>
-    <p class="form-text">New to this page? <a href="{{ url_for('register')}}">Register here</a></p>
+    <p class="form-text">New User? <a href="{{ url_for('register')}}">Register here</a></p>
   </div>
 </div>
 {% endblock body %}
