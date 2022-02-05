@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="card shadow mb-5 bg-body rounded">
+    <div class="card-header">
+        <h2>Edit Appointment</h2>
+    </div>
+    <div class="card-body">
+        <form action="{{appointment[0]}} {{appointment[1]}} {{appointment[2]}}" method="post" autocomplete="off">
+            <div class="form-text">{{ msg }}</div>
+            <div class="mb-3">
+                <input type="email" name="mailId" placeholder="Enter Email ID" class="form-control" value="{{appointment[0]}}" id="mailId" required>
+            </div>
+            <div class="mb-3">
+                <input type="email" name="docMailId" placeholder="Enter Doctor Id" class="form-control" value="{{appointment[2]}}" id="docMailId" required>
+            </div>
+            <div class="mb-3">
+                <input type="date" name="appointmentDate" placeholder="Appointment Date" class="form-control" value="{{appointment[1]}}" id="appointmentDate" required>
+            </div>
+            <button type="submit" class="btn btn-success">Update</button>
+            <a class="btn btn-success" href="{{url_for('home')}}">Home</a>
+        </form>
+    </div>
+</div>
+{% endblock body %}

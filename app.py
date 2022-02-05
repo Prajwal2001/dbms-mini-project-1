@@ -518,8 +518,8 @@ def appointmentAdd():
         if request.method=='POST':
             mailId=request.form['mailId']
             appointmentDate=request.form['appointmentDate']
-            docMailId=request.form['docMaiId']
-            cursor.execute(f'''SELECT * FROM appointment WHERE mailId = '{mailId}', appointmentDate = '{appointmentDate}', docMailId = '{docMailId}' ''')
+            docMailId=request.form['docMailId']
+            cursor.execute(f'''SELECT * FROM appointment WHERE mailId = '{mailId}' AND appointmentDate = '{appointmentDate}' AND docMailId = '{docMailId}' ''')
             appointment=cursor.fetchone()
             if appointment:
                 msg="Appointment already exists"
@@ -530,33 +530,35 @@ def appointmentAdd():
     return redirect(url_for('home'))
 
 
-@app.route("/appointmentUpdate/<mailId>", methods=['GET', 'POST'])
-def appointmentUpdate(mailId):
+@app.route("/appointmentUpdate/<args>", methods=['GET', 'POST'])
+def appointmentUpdate(args):
     if 'loggedIn' not in session or session['loggedIn']!=3:
         return redirect(url_for('home'))
     msg = ''
+    appoint = args.split()
     if request.method == 'POST':
-            nurseId = request.form['nurseId']
-            passwd = request.form['passwd']
-            nurseName = request.form['nurseName']
-            cursor.execute(f'''SELECT * FROM nurse WHERE nurseId = '{mailId}' ''')
-            nurse = cursor.fetchone()
-            if nurse and nurse[0]!=mailId:
-                msg = 'Mail-Id already in use!'
+            mailId = request.form['mailId']
+            appointmentDate = request.form['appointmentDate']
+            docMailId = request.form['docMailId']
+            cursor.execute(f'''SELECT * FROM appointment WHERE mailId = '{mailId}' AND appointmentDate = '{appointmentDate}' AND docMailId = '{docMailId}' ''')
+            appointment = cursor.fetchone()
+            if appointment:
+                msg = 'Appointment already exists!'
             else:
-                cursor.execute(f'''UPDATE appointment SET nurseId = '{nurseId}', passwd = '{passwd}', nurseName = '{nurseName}' WHERE nurseId = '{mailId}' ''')
-            return redirect(url_for('nurses'))
+                cursor.execute(f'''UPDATE appointment SET mailId = '{mailId}', appointmentDate = '{appointmentDate}', docMailId = '{docMailId}' WHERE mailId = '{appoint[0]}' AND appointmentDate = '{appoint[1]}' AND docMailId = '{appoint[2]}' ''')
+            return redirect(url_for('appointments'))
     else:
-        cursor.execute(f"SELECT * FROM appointment WHERE nurseId = '{mailId}'")
+        cursor.execute(f"SELECT * FROM appointment WHERE mailId = '{appoint[0]}' AND appointmentDate = '{appoint[1]}' AND docMailId = '{appoint[2]}' ")
         appointment = cursor.fetchone()
         return render_template("admin/appointmentUpdate.html", appointment=appointment, loggedIn = session['loggedIn'], msg=msg)
 
-@app.route("/appointmentDelete/<mailId>")
-def appointmentDelete(mailId):
+@app.route("/appointmentDelete/<args>")
+def appointmentDelete(args):
     if 'loggedIn' not in session or session['loggedIn']!=3:
         return redirect(url_for('home'))
-    cursor.execute(f'''DELETE FROM appointment WHERE nurseId = '{mailId}' ''')
-    return redirect(url_for('nurses'))
+    args = args.split()
+    cursor.execute(f'''DELETE FROM appointment WHERE mailId = '{args[0]}' AND appointmentDate = '{args[1]}' AND docMailId = '{args[2]}' ''')
+    return redirect(url_for('appointments'))
 
 
 @app.route("/records", methods=['GET', 'POST'])

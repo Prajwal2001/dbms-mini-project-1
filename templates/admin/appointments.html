@@ -18,8 +18,8 @@
                         <td>{{appointment[2]}}</td>
                         <td>{{appointment[1]}}</td>
                         <td>
-                            <a href="/appointmentUpdate/{{appointment[0]}}" class="btn btn-warning">Update</a>
-                            <a href="/appointmentDelete/{{appointment[0]}}" class="btn btn-danger">Delete</a>
+                            <a href="/appointmentUpdate/{{appointment[0]}} {{appointment[1]}} {{appointment[2]}}" class="btn btn-warning">Update</a>
+                            <a href="/appointmentDelete/{{appointment[0]}} {{appointment[1]}} {{appointment[2]}}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                     {% endfor %}
