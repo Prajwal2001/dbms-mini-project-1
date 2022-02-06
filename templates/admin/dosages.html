@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="card">
+        <div class="card-header"><h2>Dosages</h2></div>
+        <div class="card-body">
+            {% if not dosages %}
+                No Appointments found
+            {% else %}
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Mail-Id</th>
+                        <th>Medicine-Id</th>
+                        <th>Quantity</th>
+                        <th>Dosage Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dosage in dosages %}
+                    <tr>
+                        <td>{{dosage[0]}}</td>
+                        <td>{{dosage[1]}}</td>
+                        <td>{{dosage[2]}}</td>
+                        <td>{{dosage[3]}}</td>
+                        <td>
+                            <a href="/dosageUpdate/{{dosage[0]}} {{dosage[1]}} {{dosage[2]}}" class="btn btn-warning">Update</a>
+                            <a href="/dosageDelete/{{dosage[0]}} {{dosage[1]}} {{dosage[2]}}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock body %}

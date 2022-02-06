@@ -148,7 +148,7 @@ def adminLogin():
             return redirect(url_for('patients'))
         else:
             msg = 'Incorrect username / password !'
-    return render_template('adminLogin.html', msg = msg)
+    return render_template('admin/adminLogin.html', msg = msg)
 
 @app.route('/adminRegister', methods =['GET','POST'])
 def adminRegister():
@@ -167,34 +167,7 @@ def adminRegister():
             return redirect(url_for('patients'))
     else:
         msg = 'Please fill out the form !'
-    return render_template('adminRegister.html', msg = msg)
-
-@app.route("/testAdd" , methods=["GET","POST"])
-def testAdd():
-    msg=" "
-    if 'loggedIn' in session:
-        if request.method=='POST':
-            mailId=request.form['mailId']
-            testId=request.form['testId']
-            Analysis=request.form['Analysis']
-            testDate=request.form['testDate']
-            cursor.execute(f'''INSERT INTO testDesc VALUES('{mailId}','{testId}','{testDate}', '{Analysis}')''')
-            return redirect(url_for('patients'))
-        else:
-            msg='please fill out the form'
-    return render_template('testAdd.html', msg = msg)
-
-@app.route("/takes",methods=["GET","POST"])
-def takes():
-    msg=''
-    if 'loggedIn' in session:
-        if request.method=='POST':
-            mailId=request.form['mailId']
-            medicineId=request.form['medicineId']
-            quantity=request.form['quantity']
-            takesDate=request.form['takesDate']
-            cursor.execute('INSERT INTO takes VALUES(%s,%s,%s,%s)',(mailId, medicineId, quantity, takesDate))
-    return render_template('takes.html', loggedIn=session['loggedIn'], msg = msg)
+    return render_template('admin/adminRegister.html', msg = msg)
 
 @app.route("/adminDisplay")
 def adminDisplay():
@@ -253,21 +226,6 @@ def doctorDisplay():
         doctor = cursor.fetchone()
         return render_template("doctorDisplay.html", doctor = doctor, loggedIn = session['loggedIn'])
     return redirect(url_for('doctorLogin'))
-
-
-@app.route("/nurseAlloc", methods=['GET','POST'])
-def nurseAlloc():
-    msg=''
-    if 'loggedIn' in session:
-        if request.method=='POST':
-            mailId = request.form['mailId']
-            nurseId = request.form['nurseId']
-            dateIn = request.form['dateIn']
-            dateOut = request.form['dateOut']
-            cursor.execute(f'''INSERT INTO nursealloc VALUES('{session['mailId']}','{nurseId}','{mailId}','{dateIn}','{dateOut}') ''')
-            msg="successfully allocated nurse"
-        return render_template('nurseAlloc.html', loggedIn = session['loggedIn'], msg = msg)
-    return render_template('doctorLogin.html')
 
 @app.route("/myRecords",methods=['GET','POST'])
 def myRecords():
@@ -448,6 +406,7 @@ def doctorDelete(mailId):
     cursor.execute(f'''DELETE FROM doctor WHERE docMailId = '{mailId}' ''')
     return redirect(url_for('doctors'))
 
+#Admin Nurse Methods
 @app.route("/nurses", methods=['GET', 'POST'])
 def nurses():
     if 'loggedIn' not in session or session['loggedIn']!=3:
@@ -503,6 +462,68 @@ def nurseDelete(mailId):
     cursor.execute(f'''DELETE FROM nurse WHERE nurseId = '{mailId}' ''')
     return redirect(url_for('nurses'))
 
+#Nurse Allocation Methods
+@app.route("/nurseAlloc", methods=['GET', 'POST'])
+def nurseAlloc():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    cursor.execute(f'''SELECT * FROM nursealloc ''')
+    allocations=cursor.fetchall()
+    return render_template("admin/nurseAlloc.html", loggedIn=session['loggedIn'], allocations=allocations)
+
+@app.route("/nurseAllocAdd", methods=['GET','POST'])
+def nurseAllocAdd():
+    msg=''
+    if 'loggedIn' in session:
+        if request.method=='POST':
+            mailId = request.form['mailId']
+            nurseId = request.form['nurseId']
+            dateIn = request.form['dateIn']
+            dateOut = request.form['dateOut']
+            cursor.execute(f'''SELECT * FROM nursealloc WHERE mailId = '{mailId}' AND dateIn BETWEEN '{dateIn}' AND '{dateOut}' ''')
+            allocation = cursor.fetchone()
+            if allocation and allocation[0]!=mailId and allocation[2]!=dateIn:
+                msg = 'Nurse already allocated!'
+            else:
+                try:
+                    cursor.execute(f'''INSERT INTO nursealloc VALUES('{nurseId}','{mailId}','{dateIn}','{dateOut}') ''')
+                    msg="successfully allocated nurse"
+                except:
+                    msg='invalid entry'
+        return render_template('admin/nurseAllocAdd.html', loggedIn = session['loggedIn'], msg = msg)
+    return redirect(url_for('home'))
+
+@app.route("/nurseAllocUpdate/<args>", methods=['GET', 'POST'])
+def nurseAllocUpdate(args):
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    msg = ''
+    args = args.split()
+    if request.method == 'POST':
+            mailId = request.form['mailId']
+            nurseId = request.form['nurseId']
+            dateIn = request.form['dateIn']
+            dateOut = request.form['dateOut']
+            cursor.execute(f'''SELECT * FROM nursealloc WHERE mailId = '{mailId}' AND dateIn BETWEEN '{dateIn}' AND '{dateOut}' ''')
+            allocation = cursor.fetchone()
+            if allocation:
+                msg = 'Nurse already allocated!'
+            else:
+                cursor.execute(f'''UPDATE nursealloc SET mailId = '{mailId}', nurseId = '{nurseId}', dateIn = '{dateIn}', dateOut = '{dateOut}' WHERE mailId = '{args[0]}' AND dateIn = '{args[1]}' ''')
+            return redirect(url_for('nurseAlloc'))
+    else:
+        cursor.execute(f"SELECT * FROM nursealloc WHERE mailId = '{args[0]}' AND dateIn = '{args[1]}' ")
+        allocations = cursor.fetchone()
+        return render_template("admin/nurseAllocUpdate.html", allocations=allocations, loggedIn = session['loggedIn'], msg=msg)
+
+@app.route("/nurseAllocDelete/<args>")
+def nurseAllocDelete(args):
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    args = args.split()
+    cursor.execute(f'''DELETE FROM nursealloc WHERE mailId = '{args[0]}' AND dateIn = '{args[1]}' ''')
+    return redirect(url_for('nurseAlloc'))
+#Admin Appointments Methods
 @app.route("/appointments", methods=['GET', 'POST'])
 def appointments():
     if 'loggedIn' not in session or session['loggedIn']!=3:
@@ -560,7 +581,7 @@ def appointmentDelete(args):
     cursor.execute(f'''DELETE FROM appointment WHERE mailId = '{args[0]}' AND appointmentDate = '{args[1]}' AND docMailId = '{args[2]}' ''')
     return redirect(url_for('appointments'))
 
-
+#Admin Records Methods
 @app.route("/records", methods=['GET', 'POST'])
 def records():
     if 'loggedIn' not in session or session['loggedIn']!=3:
@@ -608,6 +629,172 @@ def recordDelete(recordId):
     cursor.execute(f'''DELETE FROM record WHERE recordId = '{recordId}' ''')
     return redirect(url_for('records'))
 
+#Admin Test Methods
+@app.route("/tests", methods=['GET', 'POST'])
+def tests():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    cursor.execute(f'''SELECT * FROM test ''')
+    tests=cursor.fetchall()
+    return render_template("admin/tests.html", loggedIn=session['loggedIn'], tests=tests)
+
+@app.route("/testAdd", methods=['GET', 'POST'])
+def testAdd():
+    if 'loggedIn' in session and session['loggedIn']==3:
+        if request.method=='POST':
+            testName=request.form['testName']
+            testCategory=request.form['testCategory']
+            cursor.execute(f'''INSERT INTO test(testName, testCategory) VALUES('{testName}', '{testCategory}')''')
+            return redirect(url_for('tests'))
+        return render_template('admin/testAdd.html', loggedIn=session['loggedIn'])
+    return redirect(url_for('home'))
+
+@app.route("/testUpdate/<testId>", methods=['GET', 'POST'])
+def testUpdate(testId):
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    msg = ''
+    if request.method == 'POST':
+            testName=request.form['testName']
+            testCategory=request.form['testCategory']
+            cursor.execute(f'''SELECT * FROM record WHERE testId = {testId} ''')
+            test = cursor.fetchone()
+            if test and test[1]!=testId:
+                msg = 'Test-Id already in use!'
+            else:
+                cursor.execute(f'''UPDATE test SET testName = '{testName}', testCategory = '{testCategory}' WHERE testId = {testId} ''')
+            return redirect(url_for('tests'))
+    else:
+        cursor.execute(f"SELECT * FROM test WHERE testId = {testId}")
+        test = cursor.fetchone()
+        return render_template("admin/testUpdate.html", test=test, loggedIn = session['loggedIn'], msg=msg)
+
+@app.route("/testDelete/<testId>")
+def testDelete(testId):
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    cursor.execute(f'''DELETE FROM test WHERE testId = {testId} ''')
+    return redirect(url_for('tests'))
+
+#Admin Diagnosis Methods
+@app.route("/diagnosis", methods=['GET', 'POST'])
+def diagnosis():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    cursor.execute(f'''SELECT * FROM diagnosis ''')
+    diagnosis=cursor.fetchall()
+    return render_template("admin/appointments.html", loggedIn=session['loggedIn'], diagnosis=diagnosis)
+
+@app.route("/diagnosisAdd", methods=['GET', 'POST'])
+def diagnosisAdd():
+    msg=''
+    if 'loggedIn' in session and session['loggedIn']==3:
+        if request.method=='POST':
+            mailId=request.form['mailId']
+            testId=request.form['testId']
+            testDate=request.form['testDate']
+            analysis=request.form['analysis']
+            cursor.execute(f'''SELECT * FROM diagnosis WHERE mailId = '{mailId}' AND testId = '{testId}' AND testDate = '{testDate}' ''')
+            appointment=cursor.fetchone()
+            if appointment:
+                msg="Diagnosis already exists"
+            else:
+                cursor.execute('INSERT INTO diagnosis VALUES(%s, %s, %s, %s)',(mailId, testId, testDate, analysis))
+                return redirect(url_for('diagnosis'))
+        return render_template('admin/diagnosisAdd.html', loggedIn=session['loggedIn'], msg = msg)
+    return redirect(url_for('home'))
+
+@app.route("/diagnosisUpdate/<args>", methods=['GET', 'POST'])
+def diagnosisUpdate(args):
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    msg = ''
+    test = args.split()
+    if request.method == 'POST':
+            mailId=request.form['mailId']
+            testId=request.form['testId']
+            testDate=request.form['testDate']
+            analysis=request.form['analysis']
+            cursor.execute(f'''SELECT * FROM diagnosis WHERE mailId = '{mailId}' AND testId = '{testId}' AND testDate = '{testDate}' ''')
+            diagnosis = cursor.fetchone()
+            if diagnosis:
+                msg = 'Appointment already exists!'
+            else:
+                cursor.execute(f'''UPDATE diagnosis SET mailId = '{mailId}', testId = '{testId}', testDate = '{testDate}', analysis = '{analysis}' WHERE mailId = '{test[0]}' AND testId = '{test[1]}' AND testDate = '{test[2]}' ''')
+            return redirect(url_for('appointments'))
+    else:
+        cursor.execute(f"SELECT * FROM diagnosis WHERE mailId = '{test[0]}' AND testId = '{test[1]}' AND testDate = '{test[2]}' ")
+        diagnosis = cursor.fetchone()
+        return render_template("admin/diagnosisUpdate.html", diagnosis=diagnosis, loggedIn = session['loggedIn'], msg=msg)
+
+@app.route("/diagnosisDelete/<args>")
+def diagnosisDelete(args):
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    args = args.split()
+    cursor.execute(f'''DELETE FROM diagnosis WHERE mailId = '{args[0]}' AND testId = '{args[1]}' AND testDate = '{args[2]}' ''')
+    return redirect(url_for('diagnosis'))
+
+#Admin Medicines Methods
+
+#Admin Dosages Methods
+@app.route("/dosages", methods=['GET', 'POST'])
+def dosages():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    cursor.execute(f'''SELECT * FROM dosage ''')
+    dosages=cursor.fetchall()
+    return render_template("admin/dosages.html", loggedIn=session['loggedIn'], dosages=dosages)
+
+@app.route("/dosageAdd",methods=["GET","POST"])
+def dosageAdd():
+    msg=''
+    if 'loggedIn' in session and session['loggedIn']==3:
+        if request.method=='POST':
+            mailId=request.form['mailId']
+            medicineId=request.form['medicineId']
+            quantity=request.form['quantity']
+            doseDate=request.form['doseDate']
+            cursor.execute(f'''SELECT * FROM dosage WHERE mailId = '{mailId}' AND medicineId = '{medicineId}' AND quantity = '{quantity}' AND doseDate = '{doseDate}' ''')
+            dosage=cursor.fetchone()
+            if dosage:
+                msg="Appointment already exists"
+            else:
+                cursor.execute('INSERT INTO dosage VALUES(%s,%s,%s,%s)',(mailId, medicineId, quantity, doseDate))
+                return redirect(url_for('dosages'))
+        return render_template('admin/dosageAdd.html', loggedIn=session['loggedIn'], msg = msg)
+    return redirect(url_for('home'))
+
+@app.route("/dosageUpdate/<args>", methods=['GET', 'POST'])
+def dosageUpdate(args):
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    msg = ''
+    dose = args.split()
+    if request.method == 'POST':
+            mailId=request.form['mailId']
+            medicineId=request.form['medicineId']
+            quantity=request.form['quantity']
+            doseDate=request.form['doseDate']
+            cursor.execute(f'''SELECT * FROM dosage WHERE mailId = '{mailId}' AND medicineId = '{medicineId}' AND doseDate = '{doseDate}' ''')
+            dosage = cursor.fetchone()
+            if dosage:
+                msg = 'Appointment already exists!'
+            else:
+                cursor.execute(f'''UPDATE appointment SET mailId = '{mailId}', medicineId = '{medicineId}', quantity = '{quantity}', doseDate = '{doseDate}' WHERE mailId = '{dose[0]}' AND  medicineId = '{dose[1]}' AND doseDate = '{dose[2]}' ''')
+            return redirect(url_for('dosages'))
+    else:
+        cursor.execute(f"SELECT * FROM appointment WHERE mailId = '{dose[0]}' AND  medicineId = '{dose[1]}' AND doseDate = '{dose[2]}' ")
+        dosage = cursor.fetchone()
+        return render_template("admin/appointmentUpdate.html", dosage=dosage, loggedIn = session['loggedIn'], msg=msg)
+
+@app.route("/dosageDelete/<args>")
+def dosageDelete(args):
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    args = args.split()
+    cursor.execute(f'''DELETE FROM dosage WHERE mailId = '{args[0]}' AND medicineId = '{args[1]}' AND doseDate = '{args[2]}' ''')
+    return redirect(url_for('dosages'))
 
 if __name__ == "__main__":
     app.debug=True

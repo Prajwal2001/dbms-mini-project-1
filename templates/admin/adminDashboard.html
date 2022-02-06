@@ -14,9 +14,12 @@
     <div class="btn-group-vertical">
       <div class="btn-group">
         <a class="btn btn-success" href="{{url_for('nurses')}}" style="width: 100%;">Nurses</a>
-        <a class="btn btn-warning" href="{{url_for('nurseAdd')}}"><i class="bi bi-plus-lg"></i> </a>
+        <a class="btn btn-warning" href="{{url_for('nurseAdd')}}"><i class="bi bi-plus-lg"></i></a>
       </div>
-      <a class="btn btn-secondary" href="{{url_for('nurseAlloc')}}">Allocate</a>
+      <div class="btn-group">
+        <a class="btn btn-secondary" href="{{url_for('nurseAlloc')}}" style="width: 100%;">Nurse Allocation</a>
+        <a class="btn btn-warning" href="{{url_for('nurseAllocAdd')}}"><i class="bi bi-plus-lg"></i></a>
+      </div>
     </div>
     <div class="btn-group">
       <a class="btn btn-success" href="{{url_for('records')}}" style="width: 100%;">Records</a>
@@ -27,11 +30,18 @@
       <a class="btn btn-warning" href="{{url_for('appointmentAdd')}}"><i class="bi bi-plus-lg"></i></a>
     </div>
     <div class="btn-group">
-      <a class="btn btn-success" href="#" style="width: 100%;">Tests</a>
+      <a class="btn btn-success" href="{{url_for('tests')}}" style="width: 100%;">Tests</a>
       <a class="btn btn-warning" href="{{url_for('testAdd')}}"><i class="bi bi-plus-lg"></i></a>
     </div>
-    <div class="btn-group">
-      <a class="btn btn-success" href="{{url_for('takes')}}">Add Dosage</a>
+    <div class="btn-group-vertical">
+      <div class="btn-group">
+        <a class="btn btn-success" href="#" style="width: 100%;">Medicines</a>
+        <a class="btn btn-warning" href="#"><i class="bi bi-plus-lg"></i></a>
+      </div>
+      <div class="btn-group">
+        <a class="btn btn-secondary" href="{{url_for('dosages')}}" style="width: 100%;">Dosage</a>
+        <a class="btn btn-warning" href="{{url_for('dosageAdd')}}"><i class="bi bi-plus-lg"></i></a>
+      </div>
     </div>
     <div class="btn-group-vertical">
       <a class="btn btn-success" href="{{url_for('adminDisplay')}}">View Profile</a>

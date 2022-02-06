@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="card">
+        <div class="card-header"><h2>Appointments</h2></div>
+        <div class="card-body">
+            {% if not tests %}
+                No Tests found
+            {% else %}
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Test-Id</th>
+                        <th>Test Name</th>
+                        <th>Test Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for test in tests %}
+                    <tr>
+                        <td>{{test[0]}}</td>
+                        <td>{{test[1]}}</td>
+                        <td>{{test[2]}}</td>
+                        <td>
+                            <a href="/testUpdate/{{test[0]}}" class="btn btn-warning">Update</a>
+                            <a href="/testDelete/{{test[0]}}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock body %}

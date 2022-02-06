@@ -5,7 +5,7 @@
       <h1>Enter your details to book</h1>
     </div>
     <div class="card-body">
-      <form action="{{url_for('takes')}}" method="POST" autocomplete="OFF">
+      <form action="{{url_for('dosageAdd')}}" method="POST" autocomplete="OFF">
         <div class="msg">{{msg}}</div>
         <div class="mb-3">
           <label for="mailId" class="form-label">Mail-id</label>
@@ -21,7 +21,7 @@
         </div>
         <div class="mb-3">
           <label for="takes_date" class="form-label">Date</label>
-          <input type="date" name="takes_date" placeholder="Enter the date" class="form-control" id="takes_date" required>
+          <input type="date" name="doseDate" placeholder="Enter the date" class="form-control" id="takes_date" required>
         </div>
         <button type="submit" class="btn btn-success">Add</button>
       </form>

@@ -2,14 +2,14 @@ CREATE DATABASE IF NOT EXISTS hospital;
 USE hospital;
 
 DROP TABLE IF EXISTS admin;
-DROP TABLE IF EXISTS testDesc;
-DROP TABLE IF EXISTS tests;
+DROP TABLE IF EXISTS diagnosis;
+DROP TABLE IF EXISTS test;
 DROP TABLE IF EXISTS record;
 DROP TABLE IF EXISTS nursealloc;
 DROP TABLE IF EXISTS nurse;
 DROP TABLE IF EXISTS specialization;
-DROP TABLE IF EXISTS dose;
-DROP TABLE IF EXISTS medicines;
+DROP TABLE IF EXISTS dosage;
+DROP TABLE IF EXISTS medicine;
 DROP TABLE IF EXISTS appointment;
 DROP TABLE IF EXISTS doctor;
 DROP TABLE IF EXISTS patient;
@@ -42,18 +42,18 @@ FOREIGN KEY (mailId) REFERENCES patient(mailId) ON DELETE CASCADE,
 FOREIGN KEY (docMailId) REFERENCES doctor(docMailId) ON DELETE CASCADE
 );
 
-CREATE TABLE medicines(
+CREATE TABLE medicine(
 medicineId varchar(6) PRIMARY KEY,
 medicineName varchar(30) NOT NULL
 );
 
-CREATE TABLE dose(
+CREATE TABLE dosage(
 mailId varchar(20) NOT NULL,
 medicineId varchar(6) NOT NULL,
 quantity numeric(3) NOT NULL,
 doseDate date NOT NULL,
 PRIMARY KEY(mailId, medicineId, doseDate),
-FOREIGN KEY (medicineId) REFERENCES medicines(medicineId) ON DELETE CASCADE,
+FOREIGN KEY (medicineId) REFERENCES medicine(medicineId) ON DELETE CASCADE,
 FOREIGN KEY (mailId) REFERENCES patient(mailId) ON DELETE CASCADE
 );
 
@@ -72,36 +72,35 @@ availableDate date
 );
 
 CREATE TABLE nursealloc(
-docMailId varchar(20) NOT NULL,
 nurseId varchar(20) NOT NULL,
 mailId varchar(20) NOT NULL,
 dateIn date NOT NULL,
 dateOut date,
 PRIMARY KEY(mailId, dateIn),
 FOREIGN KEY (mailId) REFERENCES patient(mailId) ON DELETE CASCADE,
-FOREIGN KEY (nurseId) REFERENCES nurse(nurseId) ON DELETE CASCADE,
-FOREIGN KEY (docMailId) REFERENCES doctor(docMailId) ON DELETE CASCADE
+FOREIGN KEY (nurseId) REFERENCES nurse(nurseId) ON DELETE CASCADE
 );
 
 CREATE TABLE record(
 mailId varchar(20) NOT NULL,
 recordId int auto_increment PRIMARY KEY,
 Analysis text,
-FOREIGN KEY(mailId) REFERENCES patient(mailId) ON DELETE CASCADE
+FOREIGN KEY (mailId) REFERENCES patient(mailId) ON DELETE CASCADE
 );
 
-CREATE TABLE tests(
-testId int PRIMARY KEY,
-testName varchar(20) NOT NULL
+CREATE TABLE test(
+testId int auto_increment PRIMARY KEY,
+testName varchar(20) NOT NULL,
+testCategory varchar(20)
 );
 
-CREATE TABLE testDesc(
+CREATE TABLE diagnosis(
 mailId varchar(20) NOT NULL,
 testId int NOT NULL,
-testDate date,
-Analysis text,
+testDate date NOT NULL,
+analysis text,
 PRIMARY KEY(mailId, testId, testDate),
-FOREIGN KEY (testId) REFERENCES tests(testId) ON DELETE CASCADE,
+FOREIGN KEY (testId) REFERENCES test(testId) ON DELETE CASCADE,
 FOREIGN KEY (mailId) REFERENCES patient(mailId) ON DELETE CASCADE
 );
 
@@ -131,7 +130,7 @@ VALUES
   ('8@gmail.com','0000','Ajay','1976-11-27','O+','M'),
   ('9@gmail.com','0000','Sankalp','1983-11-08','O+','F');
   
-INSERT INTO medicines(medicineId, medicineName)
+INSERT INTO medicine(medicineId, medicineName)
 VALUES
   (1,'Phenolphatline'),
   (2,'Paracetomal'),
@@ -170,16 +169,13 @@ VALUES
   ('0@gmail.com','2020-11-12','dr1@gmail.com'),
   ('a@gmail.com','2020-10-12','dr2@gmail.com');
 
-INSERT INTO tests(testId, testName) 
+INSERT INTO test(testId, testName, testCategory) 
 VALUES
-  (600000,'blood test'),
-  (600001,'urine test'),
-  (600002,'X ray'),
-  (600003,'MRI scan'),
-  (600004,'diabetic test'),
-  (600005,'HIV test'),
-  (600006,'covid19 test'),
-  (600007,'wbc test');
+  (1, 'Haemoglobin', 'Blood'),
+  (2, 'Cranium', 'CT'),
+  (3, 'Femur', 'X-Ray'),
+  (4, 'Brain Scan','MRI'),
+  (5, 'Sugar', 'Blood');
 
 INSERT INTO record VALUES
   ('1@gmail.com', 1, 'The Patient is fine'),

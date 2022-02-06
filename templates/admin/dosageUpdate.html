@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="card shadow mb-5 bg-body rounded">
+    <div class="card-header">
+        <h2>Edit Dosage</h2>
+    </div>
+    <div class="card-body">
+        <form action="{{appointment[0]}} {{appointment[1]}} {{appointment[3]}}" method="post" autocomplete="off">
+            <div class="form-text">{{ msg }}</div>
+            <div class="mb-3">
+                <label for="mailId" class="form-label">Patient Id</label>
+                <input type="email" name="mailId" placeholder="Enter Email ID" class="form-control" value="{{appointment[0]}}" id="mailId" required>
+            </div>
+            <div class="mb-3">
+                <label for="medicineId" class="form-label">Medicine Id</label>
+                <input type="text" name="medicineId" placeholder="Enter Medicine Id" class="form-control" value="{{appointment[1]}}" id="medicineId" required>
+            </div>
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Quantity</label>
+                <input type="number" name="quantity" placeholder="Enter Quantity" class="form-control" value="{{appointment[2]}}" id="medicineId" required>
+            </div>
+            <div class="mb-3">
+                <label for="doseDate" class="form-label">Dosage Date</label>
+                <input type="date" name="doseDate" placeholder="Dosage Date" class="form-control" value="{{appointment[3]}}" id="doseDate" required>
+            </div>
+            <button type="submit" class="btn btn-success">Update</button>
+            <a class="btn btn-success" href="{{url_for('home')}}">Home</a>
+        </form>
+    </div>
+</div>
+{% endblock body %}

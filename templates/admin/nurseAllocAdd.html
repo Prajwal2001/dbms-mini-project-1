@@ -5,7 +5,7 @@
             <h2>Allocate Nurse</h2>
         </div>
         <div class="card-body">
-            <form action="{{ url_for('nurseAlloc')}}" method="post" autocomplete="off">
+            <form action="{{ url_for('nurseAllocAdd')}}" method="post" autocomplete="off">
                 <div class="form-text">{{ msg }}</div>
                 <div class="mb-3 col">
                     <label for="mailId" class="form-label">Patient Id</label>
@@ -13,7 +13,7 @@
                 </div>
                 <div class="mb-3 col">
                     <label for="nurseId" class="form-label">Nurse Id</label>
-                    <input type="text" name="nurse_id" placeholder="Enter nurse-id" class="form-control" id="nurseId" required>
+                    <input type="text" name="nurseId" placeholder="Enter nurse-id" class="form-control" id="nurseId" required>
                 </div>
                 <div class="mb-3 col">
                     <label for="dateIn" class="form-label">Start Date</label>
