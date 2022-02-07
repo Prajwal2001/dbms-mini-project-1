@@ -493,28 +493,28 @@ def nurseAllocAdd():
         return render_template('admin/nurseAllocAdd.html', loggedIn = session['loggedIn'], msg = msg)
     return redirect(url_for('home'))
 
-@app.route("/nurseAllocUpdate/<args>", methods=['GET', 'POST'])
-def nurseAllocUpdate(args):
-    if 'loggedIn' not in session or session['loggedIn']!=3:
-        return redirect(url_for('home'))
-    msg = ''
-    args = args.split()
-    if request.method == 'POST':
-            mailId = request.form['mailId']
-            nurseId = request.form['nurseId']
-            dateIn = request.form['dateIn']
-            dateOut = request.form['dateOut']
-            cursor.execute(f'''SELECT * FROM nursealloc WHERE mailId = '{mailId}' AND dateIn BETWEEN '{dateIn}' AND '{dateOut}' ''')
-            allocation = cursor.fetchone()
-            if allocation:
-                msg = 'Nurse already allocated!'
-            else:
-                cursor.execute(f'''UPDATE nursealloc SET mailId = '{mailId}', nurseId = '{nurseId}', dateIn = '{dateIn}', dateOut = '{dateOut}' WHERE mailId = '{args[0]}' AND dateIn = '{args[1]}' ''')
-            return redirect(url_for('nurseAlloc'))
-    else:
-        cursor.execute(f"SELECT * FROM nursealloc WHERE mailId = '{args[0]}' AND dateIn = '{args[1]}' ")
-        allocations = cursor.fetchone()
-        return render_template("admin/nurseAllocUpdate.html", allocations=allocations, loggedIn = session['loggedIn'], msg=msg)
+# @app.route("/nurseAllocUpdate/<args>", methods=['GET', 'POST'])
+# def nurseAllocUpdate(args):
+#     if 'loggedIn' not in session or session['loggedIn']!=3:
+#         return redirect(url_for('home'))
+#     msg = ''
+#     args = args.split()
+#     if request.method == 'POST':
+#             mailId = request.form['mailId']
+#             nurseId = request.form['nurseId']
+#             dateIn = request.form['dateIn']
+#             dateOut = request.form['dateOut']
+#             cursor.execute(f'''SELECT * FROM nursealloc WHERE mailId = '{mailId}' AND dateIn BETWEEN '{dateIn}' AND '{dateOut}' ''')
+#             allocation = cursor.fetchone()
+#             if allocation:
+#                 msg = 'Nurse already allocated!'
+#             else:
+#                 cursor.execute(f'''UPDATE nursealloc SET mailId = '{mailId}', nurseId = '{nurseId}', dateIn = '{dateIn}', dateOut = '{dateOut}' WHERE mailId = '{args[0]}' AND dateIn = '{args[1]}' ''')
+#             return redirect(url_for('nurseAlloc'))
+#     else:
+#         cursor.execute(f"SELECT * FROM nursealloc WHERE mailId = '{args[0]}' AND dateIn = '{args[1]}' ")
+#         allocations = cursor.fetchone()
+#         return render_template("admin/nurseAllocUpdate.html", allocations=allocations, loggedIn = session['loggedIn'], msg=msg)
 
 @app.route("/nurseAllocDelete/<args>")
 def nurseAllocDelete(args):
@@ -736,6 +736,29 @@ def diagnosisDelete(args):
     return redirect(url_for('diagnosis'))
 
 #Admin Medicines Methods
+@app.route("/medicines", methods=['GET', 'POST'])
+def medicines():
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    cursor.execute(f'''SELECT * FROM medicine ''')
+    medicines=cursor.fetchall()
+    return render_template("admin/medicines.html", loggedIn=session['loggedIn'], medicines=medicines)
+
+@app.route("/medicineAdd", methods=['POST'])
+def medicineAdd():
+    if 'loggedIn' in session and session['loggedIn']==3:
+        if request.method=='POST':
+            medicineName=request.form['medicineName']
+            cursor.execute(f'''INSERT INTO medicine(medicineName) VALUES('{medicineName}')''')
+        return redirect(url_for('medicines'))
+    return redirect(url_for('home'))
+
+@app.route("/medicineDelete/<medicineId>")
+def medicineDelete(medicineId):
+    if 'loggedIn' not in session or session['loggedIn']!=3:
+        return redirect(url_for('home'))
+    cursor.execute(f'''DELETE FROM medicine WHERE medicineId = '{medicineId}' ''')
+    return redirect(url_for('medicines'))
 
 #Admin Dosages Methods
 @app.route("/dosages", methods=['GET', 'POST'])

@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="card">
+        <div class="card-header"><h2>Medicines</h2></div>
+        <div class="card-body">
+            <form action="{{ url_for('medicineAdd')}}" method="post" autocomplete="off">
+                <div class="g-3 row align-items-center">
+                    <div class="col-auto">
+                        <label for="medicineName" class="form-label">Add New Medicine</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" name="medicineName" placeholder="Enter Medicine Name" class="form-control" id="medicineName" required>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-warning">Add</button>
+                    </div>
+                </div>
+            </form>
+        <hr>
+            {% if not medicines %}
+                No Medicines Found
+            {% else %}
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Medicine Id</th>
+                        <th>Medicine Name</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for medicine in medicines %}
+                    <tr>
+                        <td>{{medicine[0]}}</td>
+                        <td>{{medicine[1]}}</td>
+                        <td>
+                            <!-- a href="/nurseAllocUpdate/{{medicine[1]}} {{medicine[2]}}" class="btn btn-warning">Update</a -->
+                            <a href="/medicineDelete/{{medicine[0]}}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock body %}

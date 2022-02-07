@@ -43,13 +43,13 @@ FOREIGN KEY (docMailId) REFERENCES doctor(docMailId) ON DELETE CASCADE
 );
 
 CREATE TABLE medicine(
-medicineId varchar(6) PRIMARY KEY,
+medicineId int auto_increment PRIMARY KEY,
 medicineName varchar(30) NOT NULL
 );
 
 CREATE TABLE dosage(
 mailId varchar(20) NOT NULL,
-medicineId varchar(6) NOT NULL,
+medicineId int NOT NULL,
 quantity numeric(3) NOT NULL,
 doseDate date NOT NULL,
 PRIMARY KEY(mailId, medicineId, doseDate),
@@ -180,3 +180,5 @@ VALUES
 INSERT INTO record VALUES
   ('1@gmail.com', 1, 'The Patient is fine'),
   ('1@gmail.com', 2, 'The Patient Physically fine, but requires psychological therapy');
+
+select * from nurseAlloc;
