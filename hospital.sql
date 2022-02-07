@@ -25,12 +25,10 @@ PRIMARY KEY (mailId)
 );
 
 CREATE TABLE doctor(
-docMailId varchar(20),
+docMailId varchar(20) PRIMARY KEY,
 passwd varchar(20) NOT NULL,
 docName varchar(30) NOT NULL,
-sex char(1) NOT NULL,
-availableDate date ,
-PRIMARY KEY (docMailId)
+sex char(1) NOT NULL
 );
 
 CREATE TABLE appointment(

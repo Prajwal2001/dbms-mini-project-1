@@ -20,10 +20,15 @@
                     <input type="text" name="docName" placeholder="Enter Name" class="form-control" id="docName" required>
                 </div>
                 <div class="mb-3 col">
-                    <label for="availableDate" class="form-label">Available Date</label>
-                    <input type="date" name="availableDate" placeholder="Enter available date" class="form-control" id="availableDate" required>
+                    <label for="sex" class="form-label">Sex</label>
+                    <select class="form-select" id="sex" name="sex" required>
+                        <option value="" selected>Select Gender</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="O">Other</option>
+                    </select>
                 </div>
-                <button type="submit" class="btn btn-success">Register</button>
+                <button type="submit" class="btn btn-primary">Register</button>
             </form>
             {% if not loggedIn %}
             <p class="form-text">Already have account? <a href="{{ url_for('doctorLogin')}}">Login here</a></p>

@@ -8,22 +8,34 @@
             <form action="{{ url_for('nurseAllocAdd')}}" method="post" autocomplete="off">
                 <div class="form-text">{{ msg }}</div>
                 <div class="mb-3 col">
-                    <label for="mailId" class="form-label">Patient Id</label>
-                    <input type="email" name="mailId" placeholder="Enter Patient mail-id" class="form-control" id="mailId" required>
+                    <label for="mailId" class="form-label">Patient</label>
+                    <select class="form-select" id="mailId" name="mailId" required>
+                        <option value="">Select Patient</option>
+                        {% for patient in patients %}
+                        <option value="{{patient[0]}}">{{patient[1]}} ({{patient[0]}})</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="mb-3 col">
-                    <label for="nurseId" class="form-label">Nurse Id</label>
-                    <input type="text" name="nurseId" placeholder="Enter nurse-id" class="form-control" id="nurseId" required>
+                    <label for="nurseId" class="form-label">Nurse</label>
+                    <select class="form-select" id="nurseId" name="nurseId" required>
+                        <option value="">Select Nurse</option>
+                        {% for nurse in nurses %}
+                        <option value="{{nurse[0]}}">{{nurse[1]}} ({{nurse[0]}})</option>
+                        {% endfor %}
+                    </select>
                 </div>
-                <div class="mb-3 col">
-                    <label for="dateIn" class="form-label">Start Date</label>
-                    <input type="date" name="dateIn" placeholder="Enter Start Date" class="form-control" id="dateIn" required>
+                <div class="row">
+                    <div class="mb-3 col">
+                        <label for="dateIn" class="form-label">Start Date</label>
+                        <input type="date" name="dateIn" placeholder="Enter Start Date" class="form-control" id="dateIn" required>
+                    </div>
+                    <div class="mb-3 col">
+                        <label for="dateOut" class="form-label">End Date</label>
+                        <input type="date" name="dateOut" placeholder="Enter End Date" class="form-control" id="dateOut" required>
+                    </div>
                 </div>
-                <div class="mb-3 col">
-                    <label for="dateOut" class="form-label">End Date</label>
-                    <input type="date" name="dateOut" placeholder="Enter End Date" class="form-control" id="dateOut" required>
-                </div>
-                <button type="submit" class="btn btn-success">Allocate</button>
+                <button type="submit" class="btn btn-primary">Allocate</button>
             </form>
         </div>
     </div>

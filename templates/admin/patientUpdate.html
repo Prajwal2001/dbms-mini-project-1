@@ -26,11 +26,26 @@
                 </div>
                 <div class="mb-3 col">
                     <label for="bloodGroup" class="form-label">Blood Group</label>
-                    <input type="text" name="bloodGroup" placeholder="Enter blood group" class="form-control" value="{{patient[4]}}" id="bloodGroup" required>
+                    <select class="form-select" id="bloodGroup" name="bloodGroup" required>
+                        <option value="">Select Gender</option>
+                        <option value="A+" {{'selected' if (patient[4]=='A+')}}>A+</option>
+                        <option value="A-" {{'selected' if (patient[4]=='A-')}}>A-</option>
+                        <option value="B+" {{'selected' if (patient[4]=='B+')}}>B+</option>
+                        <option value="B-" {{'selected' if (patient[4]=='B-')}}>B-</option>
+                        <option value="AB+" {{'selected' if (patient[4]=='AB+')}}>AB+</option>
+                        <option value="AB-" {{'selected' if (patient[4]=='AB-')}}>AB-</option>
+                        <option value="O+" {{'selected' if (patient[4]=='O+')}}>O+</option>
+                        <option value="O-" {{'selected' if (patient[4]=='O-')}}>O-</option>
+                    </select>
                 </div>
                 <div class="mb-3 col">
                     <label for="sex" class="form-label">Sex</label>
-                    <input type="text" name="sex" placeholder="Enter sex" class="form-control" value="{{patient[5]}}" id="sex" required>
+                    <select class="form-select" id="sex" name="sex" required>
+                        <option value="">Select Gender</option>
+                        <option value="M" {{'selected' if (patient[5]=='M')}}>Male</option>
+                        <option value="F" {{'selected' if (patient[5]=='F')}}>Female</option>
+                        <option value="O" {{'selected' if (patient[5]=='O')}}>Other</option>
+                    </select>
                 </div>
             </div>
             <button type="submit" class="btn btn-success">Update</button>

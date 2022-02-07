@@ -8,12 +8,17 @@
             <form action="{{record[1]}}" method="post" autocomplete="off">
                 <div class="msg">{{ msg }}</div>
                 <div class="mb-3 col">
-                    <label for="mailId" class="form-label">Patient Mail-id</label>
-                    <input type="email" name="mailId" value="{{record[0]}}" placeholder="Enter mail-id" class="form-control" id="mailId" required>
+                    <label for="mailId" class="form-label">Patient</label>
+                    <select class="form-select" id="mailId" name="mailId" required>
+                        <option value="{{record[0]}}">{{record[0]}}</option>
+                        {% for patient in patients %}
+                        <option value="{{patient[0]}}">{{patient[0]}} ({{patient[1]}})</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="mb-3 col">
                     <label for="Analysis" class="form-label">Analysis</label>
-                    <input type="text" name="Analysis" placeholder="Enter Report Data" class="form-control" id="Analysis" value="{{record[2]}}" required>
+                    <textarea name="Analysis" id="Analysis" placeholder="Enter Report Data" class="form-control" rows="4" required>{{record[2]}}</textarea>
                 </div>
                 <button type="submit" class="btn btn-success">Update</button>
                 <a class="btn btn-success" href="{{url_for('records')}}">Home</a>

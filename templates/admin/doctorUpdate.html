@@ -20,11 +20,16 @@
                     <input type="text" name="docName" placeholder="Enter name" class="form-control" id="docName" value="{{doctor[2]}}" required>
                 </div>
                 <div class="mb-3 col">
-                    <label for="availableDate" class="form-label">Available Date</label>
-                    <input type="date" name="availableDate" placeholder="Enter available date" class="form-control" id="availableDate" value="{{doctor[3]}}" required>
+                    <label for="sex" class="form-label">Sex</label>
+                    <select class="form-select" id="sex" name="sex" required>
+                        <option value="">Select Gender</option>
+                        <option value="M" {{'selected' if (doctor[3]=='M')}}>Male</option>
+                        <option value="F" {{'selected' if (doctor[3]=='F')}}>Female</option>
+                        <option value="O" {{'selected' if (doctor[3]=='O')}}>Other</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-success">Update</button>
-                <a class="btn btn-success" href="{{url_for('home')}}">Home</a>
+                <a class="btn btn-success" href="{{url_for('doctors')}}">Home</a>
             </form>
         </div>
     </div>

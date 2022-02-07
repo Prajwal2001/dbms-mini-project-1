@@ -9,11 +9,11 @@
             <div class="form-text">{{ msg }}</div>
             <div class="mb-3">
                 <label for="mailId" class="form-label">Patient Id</label>
-                <input type="email" name="mailId" placeholder="Enter Email ID" class="form-control" value="{{diagnosis[0]}}" id="mailId" required>
+                <input type="email" name="mailId" placeholder="Enter Email ID" class="form-control" value="{{diagnosis[0]}}" id="mailId" required disabled>
             </div>
             <div class="mb-3">
                 <label for="testId" class="form-label">Test Id</label>
-                <input type="number" name="testId" placeholder="Enter Doctor Id" class="form-control" value="{{diagnosis[1]}}" id="testId" required>
+                <input type="number" name="testId" placeholder="Enter Doctor Id" class="form-control" value="{{diagnosis[1]}}" id="testId" required disabled>
             </div>
             <div class="mb-3">
                 <label for="testDate" class="form-label">Test Date</label>
@@ -21,7 +21,7 @@
             </div>
             <div class="mb-3">
                 <label for="analysis" class="form-label">Analysis</label>
-                <input type="text" name="analysis" placeholder="Enter Analysis" class="form-control" value="{{diagnosis[3]}}" id="analysis" required>
+                <textarea name="analysis" id="analysis" placeholder="Enter Test Analysis" class="form-control" rows="4" required>{{diagnosis[3]}}</textarea>
             </div>
             <button type="submit" class="btn btn-success">Update</button>
             <a class="btn btn-success" href="{{url_for('home')}}">Home</a>

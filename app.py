@@ -370,13 +370,13 @@ def doctorAdd():
         docMailId = request.form['docMailId']
         passwd = request.form['passwd']
         docName = request.form['docName']
-        availableDate = request.form['availableDate']
+        sex = request.form['sex']
         cursor.execute(f'''SELECT * FROM doctor WHERE docMailId = '{docMailId}' ''')
         doctor = cursor.fetchone()
         if doctor:
             msg = 'Account already exists !'
         else:
-            cursor.execute(f'''INSERT INTO doctor VALUES ('{docMailId}', '{passwd}', '{docName}', '{availableDate}') ''')
+            cursor.execute(f'''INSERT INTO doctor(docMailId, passwd, docName, sex) VALUES ('{docMailId}', '{passwd}', '{docName}', '{sex}') ''')
             return redirect(url_for('home'))
     return render_template("admin/doctorAdd.html", msg=msg, loggedIn=session['loggedIn'] if 'loggedIn' in session else None)
 
@@ -389,13 +389,13 @@ def admindoctorUpdate(mailId):
             docMailId = request.form['docMailId']
             passwd = request.form['passwd']
             docName = request.form['docName']
-            availableDate = request.form['availableDate']
+            sex = request.form['sex']
             cursor.execute(f'''SELECT * FROM doctor WHERE docMailId = '{mailId}' ''')
             doctor = cursor.fetchone()
             if doctor and doctor[0]!=mailId:
                 msg = 'Mail-Id already in use!'
             else:
-                cursor.execute(f'''UPDATE doctor SET  docMailId = '{docMailId}', passwd = '{passwd}', docName = '{docName}', availableDate = '{availableDate}' WHERE docMailId = '{mailId}' ''')
+                cursor.execute(f'''UPDATE doctor SET  docMailId = '{docMailId}', passwd = '{passwd}', docName = '{docName}', sex = '{sex}' WHERE docMailId = '{mailId}' ''')
             return redirect(url_for('doctors'))
     else:
         cursor.execute(f"SELECT * FROM doctor WHERE docMailId = '{mailId}'")
@@ -493,7 +493,11 @@ def nurseAllocAdd():
                     msg="successfully allocated nurse"
                 except:
                     msg='invalid entry'
-        return render_template('admin/nurseAllocAdd.html', loggedIn = session['loggedIn'], msg = msg)
+        cursor.execute(f'''SELECT nurseId, nurseName FROM nurse ''')
+        nurses = cursor.fetchall()
+        cursor.execute(f'''SELECT mailId, Pname FROM patient ''')
+        patients = cursor.fetchall()
+        return render_template('admin/nurseAllocAdd.html', patients = patients, nurses = nurses, loggedIn = session['loggedIn'], msg = msg)
     return redirect(url_for('home'))
 
 # @app.route("/nurseAllocUpdate/<args>", methods=['GET', 'POST'])
@@ -550,7 +554,11 @@ def appointmentAdd():
             else:
                 cursor.execute('INSERT INTO appointment VALUES(%s,%s,%s)',(mailId, appointmentDate, docMailId))
                 return redirect(url_for('appointments'))
-        return render_template('admin/appointmentAdd.html', loggedIn=session['loggedIn'], msg = msg)
+        cursor.execute(f'''SELECT docMailId, docName FROM doctor ''')
+        doctors = cursor.fetchall()
+        cursor.execute(f'''SELECT mailId, Pname FROM patient ''')
+        patients = cursor.fetchall()
+        return render_template('admin/appointmentAdd.html', doctors = doctors, patients=patients, loggedIn=session['loggedIn'], msg = msg)
     return redirect(url_for('home'))
 
 
@@ -601,7 +609,9 @@ def recordAdd():
             Analysis=request.form['Analysis']
             cursor.execute(f'''INSERT INTO record(mailId, Analysis) VALUES('{mailId}','{Analysis}')''')
             return redirect(url_for('records'))
-        return render_template('admin/recordAdd.html', loggedIn=session['loggedIn'])
+        cursor.execute(f'''SELECT mailId, Pname FROM patient ''')
+        patients = cursor.fetchall()
+        return render_template('admin/recordAdd.html', patients=patients, loggedIn=session['loggedIn'])
     return redirect(url_for('home'))
 
 
@@ -623,7 +633,9 @@ def recordUpdate(recordId):
     else:
         cursor.execute(f"SELECT * FROM record WHERE recordId = '{recordId}'")
         record = cursor.fetchone()
-        return render_template("admin/recordUpdate.html", record=record, loggedIn = session['loggedIn'], msg=msg)
+        cursor.execute(f'''SELECT mailId, Pname FROM patient WHERE mailId <> (SELECT mailId FROM record WHERE recordId='{recordId}') ''')
+        patients = cursor.fetchall()
+        return render_template("admin/recordUpdate.html", patients=patients, record=record, loggedIn = session['loggedIn'], msg=msg)
 
 @app.route("/recordDelete/<recordId>")
 def recordDelete(recordId):
@@ -704,7 +716,11 @@ def diagnosisAdd():
             else:
                 cursor.execute('INSERT INTO diagnosis VALUES(%s, %s, %s, %s)',(mailId, testId, testDate, analysis))
                 return redirect(url_for('diagnosis'))
-        return render_template('admin/diagnosisAdd.html', loggedIn=session['loggedIn'], msg = msg)
+        cursor.execute(f'''SELECT testId, testName FROM test ''')
+        tests = cursor.fetchall()
+        cursor.execute(f'''SELECT mailId, Pname FROM patient ''')
+        patients = cursor.fetchall()
+        return render_template('admin/diagnosisAdd.html', tests=tests, patients=patients, loggedIn=session['loggedIn'], msg = msg)
     return redirect(url_for('home'))
 
 @app.route("/diagnosisUpdate/<args>", methods=['GET', 'POST'])
@@ -784,11 +800,15 @@ def dosageAdd():
             cursor.execute(f'''SELECT * FROM dosage WHERE mailId = '{mailId}' AND medicineId = '{medicineId}' AND quantity = '{quantity}' AND doseDate = '{doseDate}' ''')
             dosage=cursor.fetchone()
             if dosage:
-                msg="Appointment already exists"
+                msg="Entry already exists"
             else:
                 cursor.execute('INSERT INTO dosage VALUES(%s,%s,%s,%s)',(mailId, medicineId, quantity, doseDate))
                 return redirect(url_for('dosages'))
-        return render_template('admin/dosageAdd.html', loggedIn=session['loggedIn'], msg = msg)
+        cursor.execute(f'''SELECT medicineId, medicineName FROM medicine ORDER BY medicineName ''')
+        medicines = cursor.fetchall()
+        cursor.execute(f'''SELECT mailId, Pname FROM patient ''')
+        patients = cursor.fetchall()
+        return render_template('admin/dosageAdd.html', patients=patients, medicines=medicines, loggedIn=session['loggedIn'], msg = msg)
     return redirect(url_for('home'))
 
 @app.route("/dosageUpdate/<args>", methods=['GET', 'POST'])

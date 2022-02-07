@@ -8,12 +8,22 @@
       <form action="{{url_for('diagnosisAdd')}}" method="POST" autocomplete="OFF">
         <div class="msg">{{ msg }}</div>
         <div class="mb-3">
-          <label for="mailId" class="form-label">Mail-id</label>
-          <input type="email" name="mailId" placeholder="Enter mail-id" class="form-control" id="mailId" required>
+            <label for="mailId" class="form-label">Patient</label>
+            <select class="form-select" id="mailId" name="mailId" required>
+                <option value="">Select Patient</option>
+                {% for patient in patients %}
+                <option value="{{patient[0]}}">{{patient[1]}} ({{patient[0]}})</option>
+                {% endfor %}
+            </select>
         </div>
         <div class="mb-3">
-          <label for="testId" class="form-label">Test-id</label>
-          <input type="text" name="testId" placeholder="Enter test-id" class="form-control" id="testId" required>
+          <label for="testId" class="form-label">Test</label>
+          <select class="form-select" id="testId" name="testId" required>
+              <option value="">Select Test</option>
+              {% for test in tests %}
+              <option value="{{test[0]}}">{{test[1]}} ({{test[0]}})</option>
+              {% endfor %}
+          </select>
         </div>
         <div class="mb-3">
           <label for="testDate" class="form-label">Test Date</label>
@@ -21,9 +31,9 @@
         </div>
         <div class="mb-3">
           <label for="Analysis" class="form-label">Analysis</label>
-          <input type="text" name="Analysis" placeholder="Enter Analysis" class="form-control" id="Analysis" required>
+          <textarea name="Analysis" id="Analysis" placeholder="Enter Test Analysis" class="form-control" rows="4" required></textarea>
         </div>
-        <button type="submit" class="btn btn-success">Update</button>
+        <button type="submit" class="btn btn-primary">Add</button>
       </form>
     </div>
   </div>

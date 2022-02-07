@@ -2,28 +2,38 @@
 {% block body %}
   <div class="card">
     <div class="card-header">
-      <h1>Enter your details to book</h1>
+      <h1>Enter Dosage Details</h1>
     </div>
     <div class="card-body">
       <form action="{{url_for('dosageAdd')}}" method="POST" autocomplete="OFF">
         <div class="msg">{{msg}}</div>
         <div class="mb-3">
-          <label for="mailId" class="form-label">Mail-id</label>
-          <input type="email" name="mailId" placeholder="Enter mailId" class="form-control" id="mailId" required>
+          <label for="mailId" class="form-label">Patient</label>
+          <select class="form-select" id="mailId" name="mailId" required>
+              <option value="">Select Patient</option>
+              {% for patient in patients %}
+              <option value="{{patient[0]}}">{{patient[1]}} ({{patient[0]}})</option>
+              {% endfor %}
+          </select>
         </div>
         <div class="mb-3">
           <label for="medicineId" class="form-label">Medicine</label>
-          <input type="text" name="medicineId" placeholder="Enter medicineId" class="form-control" id="medicineId" required>
+          <select class="form-select" id="medicineId" name="medicineId" required>
+              <option value="">Select Medicine</option>
+              {% for medicine in medicines %}
+              <option value="{{medicine[0]}}">{{medicine[1]}}</option>
+              {% endfor %}
+          </select>
         </div>
         <div class="mb-3">
           <label for="quantity" class="form-label">Quantity</label>
-          <input type="text" name="quantity" placeholder="Enter quantity" class="form-control" id="quantity" required>
+          <input type="number" name="quantity" placeholder="Enter quantity" class="form-control" id="quantity" required>
         </div>
         <div class="mb-3">
-          <label for="takes_date" class="form-label">Date</label>
-          <input type="date" name="doseDate" placeholder="Enter the date" class="form-control" id="takes_date" required>
+          <label for="doseDate" class="form-label">Date</label>
+          <input type="date" name="doseDate" placeholder="Enter the date" class="form-control" id="doseDate" required>
         </div>
-        <button type="submit" class="btn btn-success">Add</button>
+        <button type="submit" class="btn btn-primary">Add</button>
       </form>
     </div>
   </div>
