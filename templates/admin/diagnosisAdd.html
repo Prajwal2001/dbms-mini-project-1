@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block body %}
+  <div class="card">
+    <div class="card-header">
+      <h2>Add Patient Diagnosis</h2>
+    </div>
+    <div class="card-body">
+      <form action="{{url_for('diagnosisAdd')}}" method="POST" autocomplete="OFF">
+        <div class="msg">{{ msg }}</div>
+        <div class="mb-3">
+          <label for="mailId" class="form-label">Mail-id</label>
+          <input type="email" name="mailId" placeholder="Enter mail-id" class="form-control" id="mailId" required>
+        </div>
+        <div class="mb-3">
+          <label for="testId" class="form-label">Test-id</label>
+          <input type="text" name="testId" placeholder="Enter test-id" class="form-control" id="testId" required>
+        </div>
+        <div class="mb-3">
+          <label for="testDate" class="form-label">Test Date</label>
+          <input type="date" name="testDate" placeholder="Enter Test date" class="form-control" id="testDate" required>
+        </div>
+        <div class="mb-3">
+          <label for="Analysis" class="form-label">Analysis</label>
+          <input type="text" name="Analysis" placeholder="Enter Analysis" class="form-control" id="Analysis" required>
+        </div>
+        <button type="submit" class="btn btn-success">Update</button>
+      </form>
+    </div>
+  </div>
+{% endblock body %}

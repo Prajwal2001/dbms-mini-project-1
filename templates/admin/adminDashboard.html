@@ -29,9 +29,15 @@
       <a class="btn btn-success" href="{{url_for('appointments')}}" style="width: 100%;">Appointments</a>
       <a class="btn btn-warning" href="{{url_for('appointmentAdd')}}"><i class="bi bi-plus-lg"></i></a>
     </div>
-    <div class="btn-group">
-      <a class="btn btn-success" href="{{url_for('tests')}}" style="width: 100%;">Tests</a>
-      <a class="btn btn-warning" href="{{url_for('testAdd')}}"><i class="bi bi-plus-lg"></i></a>
+    <div class="btn-group-vertical">
+      <div class="btn-group">
+        <a class="btn btn-success" href="{{url_for('tests')}}" style="width: 100%;">Tests</a>
+        <a class="btn btn-warning" href="{{url_for('testAdd')}}"><i class="bi bi-plus-lg"></i></a>
+      </div>
+      <div class="btn-group">
+        <a class="btn btn-secondary" href="{{url_for('diagnosis')}}" style="width: 100%;">Diagnosis</a>
+        <a class="btn btn-warning" href="{{url_for('diagnosisAdd')}}"><i class="bi bi-plus-lg"></i></a>
+      </div>
     </div>
     <div class="btn-group-vertical">
       <div class="btn-group">

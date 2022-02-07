@@ -25,13 +25,13 @@ def redirectPg():
             return redirect(url_for('doctorIndex'))
         else:
             return redirect(url_for('patients'))
-    return redirect('/home')
+    return redirect(url_for('login'))
 
 @app.route('/home')
 def home():
     if 'loggedIn' in session:
         return redirect(url_for('redirectPg'))
-    return render_template('home.html')
+    return redirect(url_for('login'))
 
 @app.route('/logout')
 def logout():
@@ -49,12 +49,15 @@ def index():
 def login():
     msg=''
     if request.method=='POST':
-        cursor.execute(f'''SELECT * FROM patient WHERE mailId = '{request.form['mailId']}' AND passwd= '{request.form['passwd']}' ''')
-        patient=cursor.fetchone()
-        if patient:
-            session['loggedIn'] = 1
-            session['mailId'] = patient[0]
-            return redirect('/index')
+        userType = request.form['userType']
+        mailId = request.form['mailId']
+        passwd = request.form['passwd']
+        cursor.execute(f'''SELECT * FROM {userType} WHERE {'docMailId' if userType == 'doctor' else 'mailId'} = '{mailId}' AND passwd= '{passwd}' ''')
+        user=cursor.fetchone()
+        if user:
+            session['loggedIn'] = 1 if userType=='patient' else (2 if userType == 'doctor' else 3)
+            session['mailId'] = user[0]
+            return redirect(url_for('home'))
         else:
             msg = 'Wrong Username or Password !'
     return render_template('login.html', msg = msg)
@@ -480,9 +483,9 @@ def nurseAllocAdd():
             nurseId = request.form['nurseId']
             dateIn = request.form['dateIn']
             dateOut = request.form['dateOut']
-            cursor.execute(f'''SELECT * FROM nursealloc WHERE mailId = '{mailId}' AND dateIn BETWEEN '{dateIn}' AND '{dateOut}' ''')
+            cursor.execute(f'''SELECT * FROM nursealloc WHERE mailId = '{mailId}' OR AND dateIn BETWEEN '{dateIn}' AND '{dateOut}' ''')
             allocation = cursor.fetchone()
-            if allocation and allocation[0]!=mailId and allocation[2]!=dateIn:
+            if allocation:
                 msg = 'Nurse already allocated!'
             else:
                 try:
@@ -683,7 +686,7 @@ def diagnosis():
         return redirect(url_for('home'))
     cursor.execute(f'''SELECT * FROM diagnosis ''')
     diagnosis=cursor.fetchall()
-    return render_template("admin/appointments.html", loggedIn=session['loggedIn'], diagnosis=diagnosis)
+    return render_template("admin/diagnosis.html", loggedIn=session['loggedIn'], diagnosis=diagnosis)
 
 @app.route("/diagnosisAdd", methods=['GET', 'POST'])
 def diagnosisAdd():
@@ -721,7 +724,7 @@ def diagnosisUpdate(args):
                 msg = 'Appointment already exists!'
             else:
                 cursor.execute(f'''UPDATE diagnosis SET mailId = '{mailId}', testId = '{testId}', testDate = '{testDate}', analysis = '{analysis}' WHERE mailId = '{test[0]}' AND testId = '{test[1]}' AND testDate = '{test[2]}' ''')
-            return redirect(url_for('appointments'))
+            return redirect(url_for('diagnosis'))
     else:
         cursor.execute(f"SELECT * FROM diagnosis WHERE mailId = '{test[0]}' AND testId = '{test[1]}' AND testDate = '{test[2]}' ")
         diagnosis = cursor.fetchone()

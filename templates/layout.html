@@ -43,25 +43,11 @@
               {% endif %}
             </ul>
             {% if not loggedIn %}
-            <div class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle link-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Login
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="{{url_for('login')}}">Patient</a></li>
-                <li><a class="dropdown-item" href="{{ url_for('doctorLogin')}}">Doctor</a></li>
-                <li><a class="dropdown-item" href="{{url_for('adminLogin')}}">Admin</a></li>
-              </ul>
+            <div class="nav-item">
+                <a class="nav-link link-light" href="{{url_for('login')}}">Login</a>
             </div>
-            <div class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle link-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Sign Up
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="{{url_for('register')}}">Patient</a></li>
-                <li><a class="dropdown-item" href="{{ url_for('doctorAdd')}}">Doctor</a></li>
-                <li><a class="dropdown-item" href="{{url_for('adminRegister')}}">Admin</a></li>
-              </ul>
+            <div class="nav-item">
+              <a class="nav-link link-light" href="{{url_for('register')}}">Sign Up</a>
             </div>
             {% else %}
             <div class="nav-item dropdown">
