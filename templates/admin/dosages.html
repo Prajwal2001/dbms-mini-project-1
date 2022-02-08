@@ -22,10 +22,12 @@
                         <td>{{dosage[1]}}</td>
                         <td>{{dosage[2]}}</td>
                         <td>{{dosage[3]}}</td>
+                        {% if loggedIn==3 %}
                         <td>
                             <a href="/dosageUpdate/{{dosage[0]}} {{dosage[1]}} {{dosage[2]}}" class="btn btn-warning">Update</a>
                             <a href="/dosageDelete/{{dosage[0]}} {{dosage[1]}} {{dosage[2]}}" class="btn btn-danger">Delete</a>
                         </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>

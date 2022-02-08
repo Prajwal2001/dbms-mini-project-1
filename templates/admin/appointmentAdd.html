@@ -5,6 +5,7 @@
         <div class="card-body">
             <form action="{{ url_for('appointmentAdd')}}" method="post" autocomplete="off">
                 <div class="form-text">{{ msg }}</div>
+                {% if loggedIn==3 %}
                 <div class="mb-3">
                     <label for="mailId" class="form-label">Patient</label>
                     <select class="form-select" id="mailId" name="mailId" required>
@@ -14,8 +15,9 @@
                         {% endfor %}
                     </select>
                 </div>
+                {% endif %}
                 <div class="mb-3">
-                    <label for="docMailId" class="form-label">Patient</label>
+                    <label for="docMailId" class="form-label">Doctor</label>
                     <select class="form-select" id="docMailId" name="docMailId" required>
                         <option value="">Select Doctor</option>
                         {% for doctor in doctors %}

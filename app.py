@@ -21,7 +21,7 @@ cursor = db.cursor()
 def redirectPg():
     if 'loggedIn' in session:
         if session['loggedIn'] == 1:
-            return redirect(url_for('index'))
+            return redirect(url_for('display'))
         elif session['loggedIn'] == 2:
             return redirect(url_for('doctorIndex'))
         else:
@@ -41,13 +41,6 @@ def logout():
     session.pop('loggedIn', None)
     session.pop('mailId', None)
     return redirect(url_for('home'))
-
-
-@app.route("/index", methods=['GET', 'POST'])
-def index():
-    if 'loggedIn' in session:
-        return render_template("index.html", loggedIn=session['loggedIn'])
-    return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -125,36 +118,6 @@ def update():
                 f'''SELECT * FROM patient WHERE mailId = '{session['mailId']}' ''')
             patient = cursor.fetchone()
         return render_template("update.html", loggedIn=session['loggedIn'], patient=patient, msg=msg)
-    return redirect(url_for('login'))
-
-
-@app.route("/patientAppointments")
-def patientAppointments():
-    if 'loggedIn' in session:
-        cursor.execute(
-            f'''SELECT * FROM appointment WHERE mailId = '{session['mailId']}' ''')
-        appointments = cursor.fetchall()
-        return render_template("patientAppointments.html", loggedIn=session['loggedIn'], appointments=appointments)
-    return redirect(url_for('login'))
-
-
-@app.route('/makeappointment', methods=['GET', 'POST'])
-def makeappointment():
-    msg = ''
-    if 'loggedIn' in session:
-        if request.method == 'POST':
-            docMailId = request.form['docMailId']
-            appointmentDate = request.form['appointmentDate']
-            cursor.execute('SELECT * FROM appointment WHERE mailId = %s and appointmentDate = %s',
-                           (session['mailId'], appointmentDate))
-            appointment = cursor.fetchone()
-            if appointment:
-                msg = "You have already booked an Appointment"
-            else:
-                cursor.execute(
-                    f'''INSERT INTO appointment VALUES ('{session['mailId']}', '{appointmentDate}', '{docMailId}') ''')
-                return redirect(url_for('index'))
-        return render_template('makeappointment.html', loggedIn=session['loggedIn'], msg=msg)
     return redirect(url_for('login'))
 
 
@@ -606,14 +569,19 @@ def nurseAllocDelete(args):
     cursor.execute(
         f'''DELETE FROM nursealloc WHERE mailId = '{args[0]}' AND dateIn = '{args[1]}' ''')
     return redirect(url_for('nurseAlloc'))
+
 # Admin Appointments Methods
 
 
 @app.route("/appointments", methods=['GET', 'POST'])
 def appointments():
-    if 'loggedIn' not in session or session['loggedIn'] != 3:
+    if 'loggedIn' not in session:
         return redirect(url_for('home'))
-    cursor.execute(f'''SELECT * FROM appointment ''')
+    if session['loggedIn'] == 1:
+        cursor.execute(
+            f'''SELECT * FROM appointment WHERE mailId = '{session['mailId']}' ''')
+    else:
+        cursor.execute(f'''SELECT * FROM appointment ''')
     appointments = cursor.fetchall()
     return render_template("admin/appointments.html", loggedIn=session['loggedIn'], appointments=appointments)
 
@@ -621,9 +589,12 @@ def appointments():
 @app.route("/appointmentAdd", methods=['GET', 'POST'])
 def appointmentAdd():
     msg = ''
-    if 'loggedIn' in session and session['loggedIn'] == 3:
+    if 'loggedIn' in session:
         if request.method == 'POST':
-            mailId = request.form['mailId']
+            if session['loggedIn'] == 3:
+                mailId = request.form['mailId']
+            else:
+                mailId = session['mailId']
             appointmentDate = request.form['appointmentDate']
             docMailId = request.form['docMailId']
             cursor.execute(
@@ -637,7 +608,11 @@ def appointmentAdd():
                 return redirect(url_for('appointments'))
         cursor.execute(f'''SELECT docMailId, docName FROM doctor ''')
         doctors = cursor.fetchall()
-        cursor.execute(f'''SELECT mailId, Pname FROM patient ''')
+        if session['loggedIn'] == 3:
+            cursor.execute(f'''SELECT mailId, Pname FROM patient ''')
+        else:
+            cursor.execute(
+                f'''SELECT mailId, Pname FROM patient WHERE mailId = '{session['mailId']}' ''')
         patients = cursor.fetchall()
         return render_template('admin/appointmentAdd.html', doctors=doctors, patients=patients, loggedIn=session['loggedIn'], msg=msg)
     return redirect(url_for('home'))
@@ -671,7 +646,7 @@ def appointmentUpdate(args):
 
 @app.route("/appointmentDelete/<args>")
 def appointmentDelete(args):
-    if 'loggedIn' not in session or session['loggedIn'] != 3:
+    if 'loggedIn' not in session:
         return redirect(url_for('home'))
     args = args.split()
     cursor.execute(
@@ -797,9 +772,13 @@ def testDelete(testId):
 
 @app.route("/diagnosis", methods=['GET', 'POST'])
 def diagnosis():
-    if 'loggedIn' not in session or session['loggedIn'] != 3:
+    if 'loggedIn' not in session:
         return redirect(url_for('home'))
-    cursor.execute(f'''SELECT * FROM diagnosis ''')
+    if session['loggedIn'] == 3:
+        cursor.execute(f'''SELECT * FROM diagnosis ''')
+    else:
+        cursor.execute(
+            f'''SELECT * FROM diagnosis WHERE mailId = '{session['mailId']}' ''')
     diagnosis = cursor.fetchall()
     return render_template("admin/diagnosis.html", loggedIn=session['loggedIn'], diagnosis=diagnosis)
 
@@ -902,9 +881,13 @@ def medicineDelete(medicineId):
 
 @app.route("/dosages", methods=['GET', 'POST'])
 def dosages():
-    if 'loggedIn' not in session or session['loggedIn'] != 3:
+    if 'loggedIn' not in session:
         return redirect(url_for('home'))
-    cursor.execute(f'''SELECT * FROM dosage ''')
+    if session['loggedIn'] == 3:
+        cursor.execute(f'''SELECT * FROM dosage ''')
+    else:
+        cursor.execute(
+            f'''SELECT * FROM dosage WHERE mailId='{session['mailId']}' ''')
     dosages = cursor.fetchall()
     return render_template("admin/dosages.html", loggedIn=session['loggedIn'], dosages=dosages)
 

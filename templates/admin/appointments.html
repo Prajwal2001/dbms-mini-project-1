@@ -21,8 +21,10 @@
                         <td>{{appointment[2]}}</td>
                         <td>{{appointment[1]}}</td>
                         <td>
+                            {% if loggedIn==3 %}
                             <a href="/appointmentUpdate/{{appointment[0]}} {{appointment[1]}} {{appointment[2]}}" class="btn btn-warning">Update</a>
-                            <a href="/appointmentDelete/{{appointment[0]}} {{appointment[1]}} {{appointment[2]}}" class="btn btn-danger">Delete</a>
+                            {% endif %}
+                            <a href="/appointmentDelete/{{appointment[0]}} {{appointment[1]}} {{appointment[2]}}" class="btn btn-danger">{{'Delete' if loggedIn==3 else 'Cancel'}}</a>
                         </td>
                     </tr>
                     {% endfor %}
