@@ -106,14 +106,6 @@ def update():
         return render_template("update.html", loggedIn=session['loggedIn'], patient = patient, msg = msg)
     return redirect(url_for('login'))
 
-@app.route("/patientAppointments")
-def patientAppointments():
-    if 'loggedIn' in session:
-        cursor.execute(f'''SELECT * FROM appointment WHERE mailId = '{session['mailId']}' ''')
-        appointments=cursor.fetchall()
-        return render_template("admin/appointments.html", loggedIn=session['loggedIn'], appointments = appointments)
-    return redirect(url_for('login'))
-
 @app.route('/makeappointment' , methods=['GET','POST'])
 def makeappointment():
     msg=''
@@ -526,12 +518,16 @@ def nurseAllocDelete(args):
     args = args.split()
     cursor.execute(f'''DELETE FROM nursealloc WHERE mailId = '{args[0]}' AND dateIn = '{args[1]}' ''')
     return redirect(url_for('nurseAlloc'))
+
 #Admin Appointments Methods
 @app.route("/appointments", methods=['GET', 'POST'])
 def appointments():
-    if 'loggedIn' not in session or session['loggedIn']!=3:
+    if 'loggedIn' not in session:
         return redirect(url_for('home'))
-    cursor.execute(f'''SELECT * FROM appointment ''')
+    if session['loggedIn']==1:
+        cursor.execute(f'''SELECT * FROM appointment WHERE mailId = '{session['mailId']}' ''')
+    else:
+        cursor.execute(f'''SELECT * FROM appointment ''')
     appointments=cursor.fetchall()
     return render_template("admin/appointments.html", loggedIn=session['loggedIn'], appointments=appointments)
 
