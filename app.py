@@ -106,25 +106,6 @@ def update():
         return render_template("update.html", loggedIn=session['loggedIn'], patient = patient, msg = msg)
     return redirect(url_for('login'))
 
-@app.route('/makeappointment' , methods=['GET','POST'])
-def makeappointment():
-    msg=''
-    if 'loggedIn' in session:
-        if request.method=='POST':
-            docMailId=request.form['docMailId']
-            appointmentDate=request.form['appointmentDate']
-            cursor.execute('SELECT * FROM appointment WHERE mailId = %s and appointmentDate = %s',(session['mailId'],appointmentDate))
-            appointment=cursor.fetchone()
-            if appointment:
-                msg="You have already booked an Appointment"
-            else:
-                cursor.execute(f'''INSERT INTO appointment VALUES ('{session['mailId']}', '{appointmentDate}', '{docMailId}') ''')
-                return redirect(url_for('patientAppointments'))
-        cursor.execute('SELECT * FROM doctor')
-        doctors = cursor.fetchall()
-        return render_template('patient/makeappointment.html', doctors=doctors, loggedIn=session['loggedIn'], msg = msg)
-    return redirect(url_for('login'))
-
 @app.route('/adminLogin',methods=['GET','POST'])
 def adminLogin():
     msg='Enter Login Credentials'
@@ -534,9 +515,12 @@ def appointments():
 @app.route("/appointmentAdd", methods=['GET', 'POST'])
 def appointmentAdd():
     msg=''
-    if 'loggedIn' in session and session['loggedIn']==3:
+    if 'loggedIn' in session:
         if request.method=='POST':
-            mailId=request.form['mailId']
+            if session['loggedIn']==3:
+                mailId=request.form['mailId']
+            else:
+                mailId=session['mailId']
             appointmentDate=request.form['appointmentDate']
             docMailId=request.form['docMailId']
             cursor.execute(f'''SELECT * FROM appointment WHERE mailId = '{mailId}' AND appointmentDate = '{appointmentDate}' AND docMailId = '{docMailId}' ''')
@@ -548,7 +532,10 @@ def appointmentAdd():
                 return redirect(url_for('appointments'))
         cursor.execute(f'''SELECT docMailId, docName FROM doctor ''')
         doctors = cursor.fetchall()
-        cursor.execute(f'''SELECT mailId, Pname FROM patient ''')
+        if session['loggedIn']==3:
+            cursor.execute(f'''SELECT mailId, Pname FROM patient ''')
+        else:
+            cursor.execute(f'''SELECT mailId, Pname FROM patient WHERE mailId = '{session['mailId']}' ''')
         patients = cursor.fetchall()
         return render_template('admin/appointmentAdd.html', doctors = doctors, patients=patients, loggedIn=session['loggedIn'], msg = msg)
     return redirect(url_for('home'))
