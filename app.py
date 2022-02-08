@@ -20,7 +20,7 @@ cursor = db.cursor()
 def redirectPg():
     if 'loggedIn' in session:
         if session['loggedIn']==1:
-            return redirect(url_for('index'))
+            return redirect(url_for('display'))
         elif session['loggedIn']==2:
             return redirect(url_for('doctorIndex'))
         else:
@@ -38,12 +38,6 @@ def logout():
    session.pop('loggedIn', None)
    session.pop('mailId', None)
    return redirect(url_for('home'))
-
-@app.route("/index",methods=['GET','POST'])
-def index():
-    if 'loggedIn' in session:
-        return render_template("index.html", loggedIn = session['loggedIn'])
-    return redirect(url_for('login'))
 
 @app.route('/login',methods=['GET','POST'])
 def login():
@@ -117,7 +111,7 @@ def patientAppointments():
     if 'loggedIn' in session:
         cursor.execute(f'''SELECT * FROM appointment WHERE mailId = '{session['mailId']}' ''')
         appointments=cursor.fetchall()
-        return render_template("patientAppointments.html", loggedIn=session['loggedIn'], appointments = appointments)
+        return render_template("admin/appointments.html", loggedIn=session['loggedIn'], appointments = appointments)
     return redirect(url_for('login'))
 
 @app.route('/makeappointment' , methods=['GET','POST'])
@@ -133,8 +127,10 @@ def makeappointment():
                 msg="You have already booked an Appointment"
             else:
                 cursor.execute(f'''INSERT INTO appointment VALUES ('{session['mailId']}', '{appointmentDate}', '{docMailId}') ''')
-                return redirect(url_for('index'))
-        return render_template('makeappointment.html', loggedIn=session['loggedIn'], msg = msg)
+                return redirect(url_for('patientAppointments'))
+        cursor.execute('SELECT * FROM doctor')
+        doctors = cursor.fetchall()
+        return render_template('patient/makeappointment.html', doctors=doctors, loggedIn=session['loggedIn'], msg = msg)
     return redirect(url_for('login'))
 
 @app.route('/adminLogin',methods=['GET','POST'])

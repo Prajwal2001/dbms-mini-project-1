@@ -176,7 +176,7 @@ VALUES
   (5, 'Sugar', 'Blood');
 
 INSERT INTO record VALUES
-  ('1@gmail.com', 1, 'The Patient is fine'),
+  ('0@gmail.com', 1, 'The Patient is fine'),
   ('1@gmail.com', 2, 'The Patient Physically fine, but requires psychological therapy');
 
 select * from nurseAlloc;

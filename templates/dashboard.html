@@ -1,0 +1,21 @@
+{% block dashboard %}
+<div class="col-md-3">
+    <div class="card shadow mb-5 bg-body rounded">
+        <div class="card-header">Dashboard</div>
+        <div class="card-body gap-2 d-grid">
+            <div class="btn-group">
+                <a class="btn btn-success" href="{{url_for('display')}}" style="width: 100%;">My Profile</a>
+                <a class="btn btn-warning" href="{{url_for('update')}}"><i class="bi bi-pencil-fill"></i></a>
+            </div>
+            <div class="btn-group-vertical">
+                <a class="btn btn-success" href="{{url_for('makeappointment')}}">Make An Appointment</a>
+                <a class="btn btn-success" href="{{url_for('patientAppointments')}}">My Appointments</a>
+            </div>
+            <a class="btn btn-success" href="#">Test Reports</a>
+            <a class="btn btn-success" href="#">Dosages</a>
+            <a class="btn btn-success" href="{{url_for('myRecords')}}">My Records</a>
+            <a class="btn btn-success" href="{{url_for('logout')}}">Logout</a>
+        </div>
+    </div>
+</div>
+{% endblock dashboard %}

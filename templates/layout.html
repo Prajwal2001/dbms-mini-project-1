@@ -16,7 +16,7 @@
           <i class="bi bi-plus-square" style="font-size: 1.5rem; color: white;"> </i>
           <h2>
           {% if loggedIn==1 %}
-          <a class="navbar-brand" href="{{url_for('index')}}"> Hospital</a>
+          <a class="navbar-brand" href="{{url_for('display')}}"> Hospital</a>
           {% elif loggedIn==2 %}
           <a class="navbar-brand" href="{{url_for('doctorIndex')}}"> Hospital</a>
           {% elif loggedIn==3 %}
@@ -52,7 +52,7 @@
             {% else %}
             <div class="nav-item dropdown">
               <a class="nav-link dropdown-toggle link-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                My Account
+                <i class="bi bi-person-circle"></i>  My Account
               </a>
               {% if loggedIn == 1 %}
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -92,6 +92,8 @@
       <div class="block-body row">
         {% if loggedIn and loggedIn==3 %}
           {% include 'admin/adminDashboard.html' %}
+        {% elif loggedIn %}
+          {% include 'dashboard.html' %}
         {% endif %}
         <div class="col">
         {% block body %}
