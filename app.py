@@ -565,7 +565,7 @@ def appointmentUpdate(args):
 
 @app.route("/appointmentDelete/<args>")
 def appointmentDelete(args):
-    if 'loggedIn' not in session or session['loggedIn']!=3:
+    if 'loggedIn' not in session:
         return redirect(url_for('home'))
     args = args.split()
     cursor.execute(f'''DELETE FROM appointment WHERE mailId = '{args[0]}' AND appointmentDate = '{args[1]}' AND docMailId = '{args[2]}' ''')
@@ -673,9 +673,12 @@ def testDelete(testId):
 #Admin Diagnosis Methods
 @app.route("/diagnosis", methods=['GET', 'POST'])
 def diagnosis():
-    if 'loggedIn' not in session or session['loggedIn']!=3:
+    if 'loggedIn' not in session:
         return redirect(url_for('home'))
-    cursor.execute(f'''SELECT * FROM diagnosis ''')
+    if session['loggedIn']==3:
+        cursor.execute(f'''SELECT * FROM diagnosis ''')
+    else:
+        cursor.execute(f'''SELECT * FROM diagnosis WHERE mailId = '{session['mailId']}' ''')
     diagnosis=cursor.fetchall()
     return render_template("admin/diagnosis.html", loggedIn=session['loggedIn'], diagnosis=diagnosis)
 
@@ -761,9 +764,12 @@ def medicineDelete(medicineId):
 #Admin Dosages Methods
 @app.route("/dosages", methods=['GET', 'POST'])
 def dosages():
-    if 'loggedIn' not in session or session['loggedIn']!=3:
+    if 'loggedIn' not in session:
         return redirect(url_for('home'))
-    cursor.execute(f'''SELECT * FROM dosage ''')
+    if session['loggedIn']==3:
+        cursor.execute(f'''SELECT * FROM dosage ''')
+    else:
+        cursor.execute(f'''SELECT * FROM dosage WHERE mailId='{session['mailId']}' ''')
     dosages=cursor.fetchall()
     return render_template("admin/dosages.html", loggedIn=session['loggedIn'], dosages=dosages)
 

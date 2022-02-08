@@ -4,16 +4,16 @@
         <div class="card-header">Dashboard</div>
         <div class="card-body gap-2 d-grid">
             <div class="btn-group">
-                <a class="btn btn-success" href="{{url_for('display')}}" style="width: 100%;">My Profile</a>
+                <a class="btn btn-success" href="{{url_for('display')}}" style="width: 100%;">Profile</a>
                 <a class="btn btn-warning" href="{{url_for('update')}}"><i class="bi bi-pencil-fill"></i></a>
             </div>
             <div class="btn-group-vertical">
-                <a class="btn btn-success" href="{{url_for('appointmentAdd')}}">Make An Appointment</a>
                 <a class="btn btn-success" href="{{url_for('appointments')}}">Appointments</a>
+                <a class="btn btn-secondary" href="{{url_for('appointmentAdd')}}">Book An Appointment</a>
             </div>
-            <a class="btn btn-success" href="#">Test Reports</a>
-            <a class="btn btn-success" href="#">Dosages</a>
             <a class="btn btn-success" href="{{url_for('myRecords')}}">Records</a>
+            <a class="btn btn-success" href="{{url_for('diagnosis')}}">Test Reports</a>
+            <a class="btn btn-success" href="{{url_for('dosages')}}">Dosages</a>
             <a class="btn btn-success" href="{{url_for('logout')}}">Logout</a>
         </div>
     </div>
